@@ -1,0 +1,10 @@
+<section class="panel fee-report-section">
+<div class="panel-heading"><div><h2>Fee History</h2><p>Issued vouchers, payments and remaining balances by billing month.</p></div>@can('fees.manage')<a class="button-secondary" href="{{ route('fees.students.history',$student) }}">Monthly Fee History</a>@endcan</div>
+<div class="student-table-scroll"><table class="student-table"><thead><tr><th>Voucher</th><th>Billing Month</th><th>Due Date</th><th>Total Fee (PKR)</th><th>Paid (PKR)</th><th>Remaining (PKR)</th><th>Status</th></tr></thead><tbody>
+@forelse($feeVouchers as $voucher)
+<tr><td><a href="{{ route('fees.vouchers.show',$voucher) }}">{{ $voucher->number }}</a></td><td>{{ \Carbon\Carbon::create($voucher->year,$voucher->month,1)->format('F Y') }}</td><td>{{ $voucher->due_date->format('d M Y') }}</td><td>{{ number_format(($voucher->total_cents + app(\App\Services\FeeBillingService::class)->fine($voucher))/100,2) }}</td><td>{{ number_format($voucher->payments->whereNull('reversed_at')->sum('amount_cents')/100,2) }}</td><td>{{ number_format($voucher->balance_cents/100,2) }}</td><td>{{ $voucher->display_status }}</td></tr>
+@empty<tr><td colspan="7">No fee vouchers have been issued for this student.</td></tr>@endforelse
+</tbody></table></div>
+</section>
+@php($historyPayments = $feeVouchers->flatMap->payments->sortByDesc('payment_date'))
+<section class="panel fee-report-section"><div class="panel-heading"><h2>Payment History</h2></div><div class="student-table-scroll"><table class="student-table"><thead><tr><th>Receipt</th><th>Date</th><th>Method</th><th>Amount (PKR)</th><th>Status</th></tr></thead><tbody>@forelse($historyPayments as $payment)<tr><td><a href="{{ route('fees.receipts.show',$payment) }}">{{ $payment->number }}</a></td><td>{{ $payment->payment_date->format('d M Y') }}</td><td>{{ $payment->method }}</td><td>{{ number_format($payment->amount_cents/100,2) }}</td><td>{{ $payment->reversed_at ? 'Reversed' : 'Received' }}</td></tr>@empty<tr><td colspan="5">No payments recorded.</td></tr>@endforelse</tbody></table></div></section>

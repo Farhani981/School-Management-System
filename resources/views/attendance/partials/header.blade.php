@@ -1,0 +1,3 @@
+<div class="page-heading"><div><div class="breadcrumb">Workspace <span>/</span> Attendance</div><h1>{{ $heading }}</h1><p>{{ $description }}</p></div><div class="student-actions">@if(auth()->user() && \App\Policies\AttendancePolicy::admin(auth()->user()))<a class="button-secondary" href="{{ route('attendance.holidays.index') }}">Holidays</a>@endif @auth<span>{{ auth()->user()->name }}</span><form method="POST" action="{{ route('logout') }}">@csrf<button class="button-secondary">Sign out</button></form>@endauth</div></div>
+@include('students.partials.feedback')
+@isset($warnings)@foreach($warnings as $warning)<p class="attendance-warning" role="status">{{ $warning }}</p>@endforeach @endisset

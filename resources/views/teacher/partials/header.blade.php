@@ -1,0 +1,1 @@
+<div class="page-heading"><div><h1>{{ $heading }}</h1><p>{{ $description ?? 'Your classes and students, in one place.' }}</p></div><span class="heading-date">{{ now()->format('l, d F Y') }}</span></div>

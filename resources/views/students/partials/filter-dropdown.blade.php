@@ -1,0 +1,6 @@
+<details class="directory-filter-dropdown"><summary class="directory-control"><x-icon name="settings" size="15"/> More <x-icon name="chevron" size="12" class="rotate-90"/></summary>
+<div class="directory-filter-panel"><strong>Filter students</strong><div class="directory-filter-grid">
+@foreach(['academic_session_id'=>['Session',$options['academic_session_id']]] as $field=>[$label,$choices])<label for="filter-{{ $field }}">{{ $label }}<select id="filter-{{ $field }}" name="{{ $field }}"><option value="">All {{ ['Class'=>'classes','Section'=>'sections','Session'=>'sessions'][$label] }}</option>@foreach($choices as $id=>$name)<option value="{{ $id }}" @selected((string)($filters[$field]??'')===(string)$id)>{{ $name }}</option>@endforeach</select></label>@endforeach
+@foreach(['gender'=>['Male','Female','Other']] as $field=>$choices)<label for="filter-{{ $field }}">{{ ucfirst($field) }}<select id="filter-{{ $field }}" name="{{ $field }}"><option value="">All {{ $field==='status' ? 'statuses' : 'genders' }}</option>@foreach($choices as $choice)<option value="{{ $choice }}" @selected(($filters[$field]??'')===$choice)>{{ $choice }}</option>@endforeach</select></label>@endforeach
+</div><div class="directory-filter-actions"><a href="{{ route('students.index') }}">Reset</a><button type="submit" class="button-primary">Apply filters</button></div></div>
+</details>

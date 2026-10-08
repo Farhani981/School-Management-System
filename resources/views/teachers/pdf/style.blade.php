@@ -1,0 +1,1 @@
+<style>body{font-family:DejaVu Sans,sans-serif;font-size:10px;color:#243047}h1{font-size:20px}table{width:100%;border-collapse:collapse;margin-top:20px}th,td{text-align:left;padding:8px;border-bottom:1px solid #dde2eb}th{background:#f0f3f8} .total{font-size:14px;font-weight:bold}</style>

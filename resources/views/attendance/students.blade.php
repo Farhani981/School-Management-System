@@ -1,0 +1,21 @@
+@extends('layouts.admin')
+@section('title','Student Attendance')
+@section('content')
+<div class="student-attendance-page">
+@include('attendance.partials.header',['heading'=>'Student Attendance','description'=>'Mark your class, review existing records and save the full roster.'])
+<section class="student-attendance-banner"><div><span class="student-attendance-eyebrow">DAILY ATTENDANCE</span><h2>A great day starts with being here.</h2><p>Choose your class and session below to load your student roster.</p></div><div class="student-attendance-date"><span>Attendance date</span><strong>{{ \Illuminate\Support\Carbon::parse($data['date'])->format('d M Y') }}</strong></div></section>
+<form method="GET" action="{{ route('attendance.students.index') }}" class="panel student-form"><div class="student-form-grid"><div class="admission-field"><label for="attendance-date">Date</label><input id="attendance-date" type="date" name="date" value="{{ $data['date'] }}" max="{{ now()->toDateString() }}" required></div>
+@foreach(['school_class_id'=>['Class',$classes],'section_id'=>['Section',$sections],'academic_session_id'=>['Session',$sessions]] as $field=>[$label,$options])<div class="admission-field"><label for="attendance-{{ $field }}">{{ $label }}</label><select id="attendance-{{ $field }}" name="{{ $field }}" required><option value="">Select {{ $label }}</option>@foreach($options as $option)<option value="{{ $option->id }}" @selected(($data[$field] ?? '')==$option->id)>{{ $option->name }}</option>@endforeach</select></div>@endforeach</div><div class="form-actions"><button class="button-primary">Load Students</button></div></form>
+@if($students->isNotEmpty())
+<form method="POST" action="{{ route('attendance.students.store') }}" class="panel attendance-mark-form">@csrf @foreach($data as $field=>$value)<input type="hidden" name="{{ $field }}" value="{{ $value }}">@endforeach
+<div class="panel-heading"><div><h2>{{ $students->count() }} active students</h2><p>{{ $marked->count() }} already marked. Existing statuses are loaded for editing.</p></div><div class="student-actions"><button type="button" class="button-secondary" data-mark-all="present">Mark all Present</button><button type="button" class="button-secondary" data-mark-all="absent">Mark all Absent</button></div></div>
+<div class="attendance-live-summary" data-attendance-summary aria-live="polite"></div>
+@foreach($students as $student)
+@php($index=$loop->index)
+<div class="attendance-mark-row" data-attendance-row><div class="attendance-person">@include('students.partials.avatar')<div><strong>{{ $student->first_name }} {{ $student->last_name }}</strong><small class="student-secondary">Roll {{ $student->roll_number }} · {{ $student->admission_no }} @if($marked->has($student->id)) · Already marked @endif</small></div></div><input type="hidden" name="rows[{{ $index }}][student_id]" value="{{ $student->id }}">
+<div class="attendance-status-buttons" role="group" aria-label="Status for {{ $student->first_name }}">@foreach(\App\Models\StudentAttendance::STATUSES as $status)<label><input type="radio" name="rows[{{ $index }}][status]" value="{{ $status }}" @checked(old('rows.'.$index.'.status',$marked->get($student->id)?->status ?? 'present')===$status) required><span>{{ ucwords(str_replace('_',' ',$status)) }}</span></label>@endforeach</div>
+<div class="admission-field"><label class="sr-only" for="remarks-{{ $student->id }}">Remarks for {{ $student->first_name }}</label><input id="remarks-{{ $student->id }}" name="rows[{{ $index }}][remarks]" value="{{ old('rows.'.$index.'.remarks',$marked->get($student->id)?->remarks) }}" maxlength="1000" placeholder="Remarks (optional)"></div></div>@endforeach
+<div class="student-form"><label><input type="checkbox" name="notify_absent" value="1" @checked(old('notify_absent',config('attendance.notify_absent')))> Notify parents on new Absent marks</label><p class="photo-help">SMS/WhatsApp gateway is currently a placeholder.</p><div class="form-actions"><button class="button-primary">Save Attendance</button></div></div></form>
+@elseif(!empty($data['school_class_id']))<div class="panel student-form">No active students match this class, section and academic session.</div>@endif
+</div>
+@endsection

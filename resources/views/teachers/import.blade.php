@@ -1,0 +1,7 @@
+@extends('layouts.admin')
+@section('title','Import Teachers')
+@section('content')
+<div class="page-heading"><div><h1>Import Teachers</h1><p>Add teachers from an Excel workbook or CSV file.</p></div><a class="button-secondary" href="{{ route('teachers.index') }}">Back to Teachers</a></div>
+@include('students.partials.feedback')
+<section class="panel student-form"><h2>Prepare your file</h2><p><a class="action-view" href="{{ route('teachers.import.template') }}">Download CSV template</a></p><p class="photo-help">Use the template headers. Department and designation names must match existing setup options. CNIC format: 12345-1234567-1. Joining date: YYYY-MM-DD as text. Phone and CNIC columns should be stored as text to preserve leading zeros. Basic Salary is required and must be at least Rs. 1; optional allowances and fixed deductions default to zero. Employee IDs are generated automatically; login accounts and uploads can be added through Edit. All rows are validated and imported together; a failed row rolls back the entire import.</p><form method="POST" action="{{ route('teachers.import.store') }}" enctype="multipart/form-data">@csrf<div class="admission-field"><label for="import-file">Excel / CSV (maximum 10 MB)</label><input id="import-file" type="file" name="file" accept=".xlsx,.csv" required></div><div class="form-actions"><button class="button-primary">Import Teachers</button></div></form></section>
+@endsection

@@ -1,0 +1,123 @@
+.exams-page { --exam-accent:#0a7ea4; --exam-soft:#e8f4f8; --exam-border:#e1e9ec; color:#263238; max-width:1500px; margin:0 auto; }
+.simple-exam-class { margin-bottom:22px; overflow:hidden; }
+.simple-exam-class[hidden] { display:none; }.simple-exam-tabs { display:flex; gap:10px; overflow-x:auto; margin:0 0 20px; padding-bottom:4px; }.simple-exam-tabs button { flex-shrink:0; padding:12px 20px; background:white; border:1px solid #d8e4ec; border-radius:9px; color:#607888; font-size:13px; font-weight:600; }.simple-exam-tabs button[aria-selected=true] { color:#0a7ea4; border-color:#95cbdc; background:#e8f5fa; }.simple-exam-tabs button:focus-visible { outline:2px solid #0a7ea4; outline-offset:2px; }
+.exam-upload-bar { display:flex; flex-wrap:wrap; align-items:center; gap:20px; padding:20px; margin-bottom:20px; }.exam-upload-bar>div { flex:1; min-width:240px; }.exam-upload-bar p { font-size:12px; color:#718197; margin:6px 0; }.exam-upload-bar a { color:#0a7ea4; font-size:12px; }.exam-upload-bar form { display:flex; flex-wrap:wrap; align-items:center; gap:12px; }.exam-upload-bar input { max-width:100%; }
+.simple-datesheet-table { min-width:1100px; }.simple-datesheet-table th { font-size:11px; white-space:nowrap; }.simple-datesheet-table td { vertical-align:middle; }.simple-datesheet-table input:not([type=checkbox]),.simple-datesheet-table select { min-height:40px; padding:8px 10px; border:1px solid #d6e2e9; border-radius:7px; background:#fff; font:inherit; font-size:12px; width:100%; }.simple-datesheet-table input[type=number] { min-width:76px; }.simple-datesheet-table input[type=date] { min-width:140px; }.simple-datesheet-table input[type=time] { min-width:110px; }.simple-datesheet-table select { min-width:160px; }.simple-datesheet-table input:focus,.simple-datesheet-table select:focus { outline:2px solid #77b7ca; outline-offset:2px; }.simple-datesheet-table .is-excluded { background:#fafcfd; color:#8797a6; }.simple-datesheet-table input:disabled,.simple-datesheet-table select:disabled { background:#f3f6f9; }
+.simple-exam-exception { margin:0; padding:14px 20px; border-top:1px solid #e1e9ef; color:#718197; font-size:12px; }.simple-exam-exception label { display:block; margin:12px 0; }.simple-exam-exception input:not([type=checkbox]) { width:100%; padding:10px; border:1px solid #d6e2e9; border-radius:6px; }
+.simple-exam-submit { display:flex; align-items:center; flex-wrap:wrap; gap:14px; padding:22px; position:sticky; bottom:12px; box-shadow:0 8px 30px rgb(15 42 51 / 9%); }.simple-exam-submit>div { flex:1; min-width:220px; }.simple-exam-submit p { font-size:12px; margin:6px 0 0; color:#718197; line-height:1.6; }
+.simple-exam-page .simple-datesheet-table { min-width:880px; }.simple-paper-date { min-width:210px; }.simple-paper-times { display:flex; gap:8px; margin-top:8px; }.simple-paper-times label { flex:1; min-width:0; }.simple-paper-times span,.simple-section-teachers span { display:block; margin-bottom:5px; color:#718197; font-size:10px; }.simple-datesheet-table .simple-paper-times input { min-width:0; padding:8px 5px; font-size:11px; }.simple-section-teachers { min-width:170px; display:flex; flex-direction:column; gap:10px; }.simple-exam-page .simple-datesheet-table th,.simple-exam-page .simple-datesheet-table td { padding-left:12px; padding-right:12px; }
+.exam-schedule-steps { display:flex; gap:16px; padding:16px 20px; margin:0 0 20px; background:white; border:1px solid var(--exam-border); border-radius:12px; list-style:none; }
+.exam-schedule-steps li { display:flex; align-items:center; gap:10px; flex:1; color:#7b8a98; font-size:13px; }
+.exam-schedule-steps li>span { display:grid; place-items:center; width:30px; height:30px; border-radius:50%; background:#f0f4f7; flex-shrink:0; }
+.exam-schedule-steps .is-current { color:#0a7ea4; font-weight:650; }.exam-schedule-steps .is-current>span { background:#e5f3f8; }.exam-schedule-steps .is-complete { color:#168373; }
+.exam-schedule-status { display:flex; align-items:center; gap:16px; border:1px solid #cce6ec; border-radius:12px; background:#eff8fb; padding:20px; margin-bottom:20px; color:#0a7ea4; }
+.exam-schedule-status>div { flex:1; }.exam-schedule-status h2 { margin:0 0 5px; font-size:16px; font-weight:700; }.exam-schedule-status p { margin:0; font-size:13px; line-height:1.6; color:#607888; }
+.exam-setup-resolution { margin-bottom:24px; overflow:hidden; }.exam-setup-resolution .panel-heading { gap:16px; flex-wrap:wrap; }.exam-setup-resolution .panel-heading p { max-width:640px; line-height:1.6; }
+.exam-resolution-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,270px),1fr)); gap:16px; padding:0 20px 20px; }
+.exam-resolution-card { display:flex; flex-direction:column; gap:12px; padding:18px; border:1px solid #e1e9ef; border-radius:12px; background:#fafcfe; }.exam-resolution-card>div:first-child { display:flex; align-items:center; gap:10px; }.exam-resolution-icon { display:grid; place-items:center; width:36px; height:36px; background:#e6f3f8; color:#0a7ea4; border-radius:9px; }.exam-resolution-card h3 { font-size:15px; font-weight:700; margin:0; }.exam-resolution-card p { font-size:12px; color:#718197; margin:0; }.exam-resolution-card ul { margin:0; padding-left:18px; list-style:disc; font-size:12px; line-height:1.7; color:#865b29; }.exam-resolution-card .exam-actions { margin-top:auto; }.exam-resolution-card a { font-size:12px; }
+.exam-resolution-footer { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; padding:16px 20px; border-top:1px solid #e1e9ef; }.exam-resolution-footer p { margin:0; color:#718197; font-size:13px; }
+.exam-missing-papers { padding:14px 20px; margin:0 0 20px; border:1px solid #e1e9ef; background:white; border-radius:10px; font-size:13px; color:#607888; }.exam-missing-papers ul { padding-left:20px; margin-top:12px; line-height:1.8; list-style:disc; }
+.exam-schedule-page .exam-editor { width:100%; max-width:100%; margin:0 0 24px; border-radius:14px; overflow:hidden; }.exam-schedule-page .exam-editor-heading { padding:20px 24px; background:#fafcfe; }.exam-schedule-page .exam-editor-heading h2 { font-size:17px; font-weight:700; }.exam-schedule-page .exam-editor-fields { grid-template-columns:repeat(3,minmax(0,1fr)); gap:20px; padding:24px; }.exam-schedule-page .exam-editor-fields input:not([type=checkbox]),.exam-schedule-page .exam-editor-fields select { min-height:44px; border-radius:8px; background:#fcfdff; }.exam-schedule-page .exam-editor-fields input:focus,.exam-schedule-page .exam-editor-fields select:focus { outline:2px solid #75b7ca; outline-offset:2px; }.exam-schedule-page .exam-editor-footer { justify-content:flex-end; padding:18px 24px; border-top:1px solid #e1e9ef; background:#fafcfe; }.exam-schedule-page .exam-editor form>.photo-help { margin:0; padding:0 24px 18px; background:#fafcfe; line-height:1.6; }.exam-schedule-page .exam-cancel-button { border-color:#d5e0e8; color:#607888; background:white; }
+@media(max-width:1000px) { .exam-schedule-page .exam-editor-fields { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:640px) { .exam-schedule-steps { flex-direction:column; gap:12px; }.exam-schedule-page .exam-editor-fields { grid-template-columns:1fr; padding:18px; }.exam-schedule-status { flex-wrap:wrap; }.exam-schedule-page .exam-editor-footer>* { width:100%; } }
+.exam-overview-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr)); gap:20px; margin-top:20px; }
+.exam-overview-card { display:flex; flex-direction:column; gap:12px; min-width:0; background:white; border:1px solid var(--exam-border); border-left:4px solid #16b5a0; border-radius:14px; padding:22px; box-shadow:0 2px 8px rgb(15 42 51 / 5%); }
+.exam-overview-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.exam-overview-heading h2 { margin:0; font-size:18px; font-weight:700; overflow-wrap:anywhere; }
+.exam-overview-heading h2 a { color:inherit; }
+.exam-overview-type { align-self:flex-start; color:#087e70; background:#e2f8f1; border-radius:20px; padding:4px 10px; font-size:12px; }
+.exam-overview-detail { display:flex; align-items:flex-start; gap:9px; font-size:13px; color:#647984; }
+.exam-overview-detail .icon { flex-shrink:0; color:var(--exam-accent); }
+.exam-delivery-note { margin:0; padding:10px; background:#f3f8fa; border-radius:8px; font-size:12px; line-height:1.6; }
+.exam-card-checklist { font-size:12px; color:#8a5b18; }.exam-card-checklist ul { padding-left:18px; margin-top:8px; }
+.exam-overview-actions { margin-top:auto; display:flex; flex-wrap:wrap; gap:8px; padding-top:8px; }.exam-overview-actions a { flex:1; justify-content:center; }
+.exam-editor-footer { flex-wrap:wrap; }
+.exams-page .page-heading { gap:18px; flex-wrap:wrap; }
+.exams-page .page-heading h1 { overflow-wrap:anywhere; }
+.exam-actions { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+.exam-toolbar { display:flex; align-items:end; gap:14px; padding:20px; flex-wrap:wrap; }
+.exam-toolbar .admission-field { flex:1; min-width:180px; }
+.exam-name { color:var(--exam-accent); font-weight:650; }
+.exam-status { display:inline-flex; border-radius:30px; background:var(--exam-soft); color:var(--exam-accent); padding:6px 12px; font-size: 13px; font-weight:650; white-space:nowrap; }
+.exam-status-cancelled { background:#fee2e2; color:#b91c1c; }
+.exam-pagination { padding:14px 20px; }
+.exam-empty { text-align:center; padding:36px 18px; display:flex; align-items:center; flex-direction:column; gap:12px; }
+.exam-empty h2 { font-size: 17px; font-weight:650; }.exam-empty p { color:#647984; }
+.exam-steps { display:flex; gap:24px; padding:16px 20px; margin:0 0 20px; border:1px solid var(--exam-border); border-radius:10px; background:#fff; list-style:none; }
+.exam-steps li { display:flex; align-items:center; gap:9px; font-size: 14px; color:#647984; }.exam-steps li span { display:grid; place-items:center; width:27px; height:27px; border-radius:50%; background:#f1f5f9; font-weight:650; }.exam-steps .current,.exam-steps .done { color:var(--exam-accent); }.exam-steps .current span,.exam-steps .done span { background:var(--exam-soft); }
+.exam-section-heading { margin-bottom:20px; }.exam-section-heading h2 { font-size: 17px; font-weight:650; }.exam-section-heading p { color:#647984; font-size: 14px; margin-top:5px; }.exams-page .student-form-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }.exam-wide { grid-column:1/-1; }
+.exam-class-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; }.exam-class-option { min-width:0; border:1px solid var(--exam-border); border-radius:9px; padding:12px 16px; }.exam-class-option legend { font-size: 15px; font-weight:650; padding:0 6px; }.exam-checks { display:flex; gap:14px; flex-wrap:wrap; }.exam-checks label { display:flex; gap:8px; align-items:center; min-height:36px; font-size: 14px; }.exams-page input[type=checkbox] { accent-color:var(--exam-accent); width:17px; height:17px; }
+.exam-save-bar { display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; padding:18px 20px; }.exam-save-bar>span { display:flex; align-items:center; gap:8px; color:#647984; font-size: 13px; }.exam-save-bar .button-primary { margin-left:auto; }.exams-page form>.exam-save-bar { background:#fff; border:1px solid var(--exam-border); border-radius:10px; }
+.exam-notice,.exam-readiness { padding:16px 20px; background:#fff7ed; border:1px solid #fed7aa; border-radius:10px; margin:18px 0; font-size: 14px; color:#9a3412; }.exam-notice a { text-decoration:underline; }.exam-readiness { display:flex; gap:12px; align-items:flex-start; }.exam-readiness h2 { font-size: 15px; font-weight:650; margin-bottom:5px; }.exam-readiness ul { padding-left:18px; list-style:disc; line-height:1.8; }.exam-ready { background:var(--exam-soft); color:var(--exam-accent); border-color:#b9dde8; }
+.exam-class-tabs { display:flex; gap:8px; overflow-x:auto; margin:20px 0 14px; padding-bottom:5px; }.exam-class-tabs a { display:block; padding:10px 18px; background:#fff; border:1px solid var(--exam-border); border-radius:8px; white-space:nowrap; font-size: 14px; }.exam-class-tabs a.active { background:var(--exam-soft); border-color:#b9dde8; color:var(--exam-accent); font-weight:650; }
+.exam-subject-table input[type=number] { width:110px; }.exam-subject-table select { min-width:175px; }.exam-subject-table input:not([type=checkbox]),.exam-subject-table select { border:1px solid #d7e2e9; background:#fff; border-radius:6px; padding:9px 10px; font:inherit; color:inherit; }.exam-subject-table input:disabled,.exam-subject-table select:disabled { background:#f6f8fa; color:#647984; }.exam-help { display:block; margin-top:6px; font-size: 13px; color:var(--exam-accent); }.exam-description { color:#647984; margin-bottom:16px; white-space:pre-line; }
+.exams-page .student-table-scroll { position:relative; max-width:100%; }.exam-subject-table td { position:relative; }
+.exams-page form>.panel+.panel { margin-top:18px; }.exams-page .exam-checks label { display:flex; align-items:center; gap:8px; }
+.exam-cancel { border-top:1px solid var(--exam-border); padding:20px 0; margin-top:25px; color:#647984; font-size: 14px; }.exam-cancel summary { cursor:pointer; min-height:30px; }.exam-cancel p { margin:8px 0 15px; }.exam-cancel form { display:flex; gap:12px; align-items:end; flex-wrap:wrap; }.exam-cancel .admission-field { flex:1; min-width:200px; }.exam-cancel button { color:#b91c1c; }
+.exams-page :focus-visible { outline:2px solid var(--exam-accent); outline-offset:3px; }.exams-page button:disabled { opacity:.5; cursor:not-allowed; }
+@media(max-width:640px) { .exams-page .student-form-grid { grid-template-columns:1fr; }.exam-steps { gap:12px; padding:14px; flex-direction:column; }.exam-toolbar { padding:14px; }.exam-toolbar .admission-field { min-width:100%; }.exam-save-bar { padding:16px; }.exam-save-bar .button-primary { width:100%; justify-content:center; }.exam-class-grid { grid-template-columns:1fr; } }
+
+.exams-page .exam-toolbar label { display:block; margin-bottom:6px; font-size: 13px; font-weight:600; }.exams-page .exam-toolbar input,.exams-page .exam-toolbar select { display:block; width:100%; border:1px solid #d7e2e9; background:#fff; border-radius:6px; padding:9px 10px; min-height:40px; }.exam-subject-table input[type=date],.exam-subject-table input[type=datetime-local] { min-width:180px; }.exam-subject-table input[type=time] { width:120px; display:block; margin-bottom:6px; }.exams-page details summary { cursor:pointer; }.exams-page details ul { padding-left:20px; list-style:disc; }
+
+.exam-list-toolbar { display:flex; align-items:center; gap:12px; padding:12px 16px; flex-wrap:wrap; }
+.exam-list-toolbar input,.exam-list-toolbar select { border:1px solid #cfdbe4; border-radius:5px; padding:9px 12px; background:#fff; color:inherit; font:inherit; }
+.exam-list-toolbar input { width:310px; max-width:100%; }
+.exam-page-size { margin-left:auto; display:flex; gap:8px; align-items:center; color:#708397; font-size: 14px; }
+.exam-list-table th { background:#edf2f6; text-transform:none; font-size: 14px; }
+.exam-list-table td { padding-top:18px; padding-bottom:18px; }
+.exam-list-status { display:inline-block; min-width:78px; text-align:center; padding:5px 12px; border-radius:4px; font-size: 13px; }
+.exam-list-status.active { color:#15803d; background:#dcfce7; }.exam-list-status.pending { color:#c65b22; background:#fff1e8; }.exam-list-status.scheduled { color:#087eaa; background:#dff4fc; }.exam-list-status.closed { color:#c62635; background:#ffe3e6; }
+.exam-row-menu { position:relative; }.exam-row-menu summary { list-style:none; font-size: 23px; width:32px; text-align:center; }.exam-row-menu summary::-webkit-details-marker { display:none; }.exam-row-menu[open] div { position:absolute; right:0; top:0; z-index:4; background:white; box-shadow:0 4px 16px #20344426; border:1px solid #e1e9ec; border-radius:6px; min-width:135px; }.exam-row-menu a { display:block; padding:9px 14px; white-space:nowrap; }.exam-row-menu a:hover { background:#e8f4f8; }
+.exam-editor-page { display:flex; justify-content:flex-end; }.exam-editor { width:560px; max-width:100%; }.exam-editor-heading { padding:16px; border-bottom:1px solid #e1e9ec; display:flex; justify-content:space-between; align-items:center; }.exam-editor-heading h1 { font-size: 16px; font-weight:650; }.exam-editor-heading a { color:#e44747; font-size: 25px; }
+.exam-editor-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px 14px; padding:22px 16px; }.exam-editor-fields label { display:block; font-size: 13px; font-weight:600; margin-bottom:8px; }.exam-editor-fields input:not([type=checkbox]),.exam-editor-fields select { width:100%; min-height:38px; border:1px solid #cfdbe4; border-radius:5px; padding:8px 12px; background:white; color:inherit; font:inherit; }.exam-editor-fields small { display:block; color:#708397; font-size: 12px; margin-top:6px; }.exam-editor-fields h2 { font-size: 15px; font-weight:600; margin-bottom:6px; }.exam-editor-fields .exam-class-grid { margin-top:12px; grid-template-columns:1fr; }
+.exam-editor-footer { display:flex; justify-content:center; gap:14px; padding:0 16px 22px; }.exam-editor-footer>* { min-width:124px; justify-content:center; }.exam-cancel-button { border:1px solid #ef4444; color:#ef4444; border-radius:6px; padding:11px 20px; text-align:center; }
+@media(max-width:640px) { .exam-list-toolbar input { width:100%; }.exam-page-size { margin-left:0; }.exam-editor-fields { grid-template-columns:1fr; }.exam-editor-page { display:block; } }
+
+/* Teacher examination marks register. */
+.teacher-dashboard-page .exam-marks-page { max-width:1280px; color:var(--ink); }
+.exam-marks-page .page-heading { align-items:center; margin-bottom:24px; }
+.marks-eyebrow { display:block; margin-bottom:8px; font-size:10px; letter-spacing:.12em; font-weight:700; color:var(--teal); }
+.exam-marks-page .page-heading h1 { font-size:26px; letter-spacing:-.035em; line-height:1.25; }
+.exam-marks-page .page-heading p { margin-top:8px; line-height:1.7; color:var(--mute); }
+.marks-overview { display:grid; grid-template-columns:1fr 1fr 1.25fr 1.7fr; margin-bottom:20px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px 6px; }
+.marks-overview>div { min-width:0; padding:0 22px; border-right:1px solid var(--line); }
+.marks-overview>div:last-child { border:0; }
+.marks-overview>div>span { display:flex; align-items:center; gap:6px; margin-bottom:9px; color:var(--mute); font-size:12px; }
+.marks-overview strong { display:block; font-size:23px; font-weight:700; letter-spacing:-.025em; line-height:1.35; }
+.marks-overview .marks-state { display:inline-flex; align-items:center; border-radius:6px; padding:5px 9px; font-size:12px; letter-spacing:0; background:var(--warn-bg); color:var(--warn); }
+.marks-overview .marks-state-done { background:var(--ok-bg); color:var(--ok); }
+.marks-overview .marks-state-problem { background:var(--danger-bg); color:var(--danger); }
+.marks-overview .marks-deadline { padding-top:5px; font-size:14px; letter-spacing:0; }
+.exam-marks-page .exam-upload-bar { padding:22px; border-radius:14px; gap:24px; background:var(--card); border-color:var(--line); box-shadow:none; }
+.exam-marks-page .marks-upload-copy { display:flex; align-items:flex-start; gap:14px; min-width:220px; }
+.marks-section-icon { display:grid; place-items:center; width:44px; height:44px; flex-shrink:0; border-radius:11px; background:var(--soft); color:var(--teal); }
+.exam-marks-page h2 { font-size:15px; font-weight:650; margin:0; color:var(--ink); }
+.exam-marks-page .exam-upload-bar p { max-width:390px; line-height:1.7; margin:6px 0 10px; color:var(--mute); }
+.exam-marks-page .exam-upload-bar a { display:inline-flex; align-items:center; gap:6px; font-weight:600; color:var(--teal); }
+.exam-marks-page .exam-upload-bar form { align-items:flex-end; flex:1; min-width:0; }
+.marks-file-field { flex:1; min-width:180px; }
+.marks-file-field label { display:block; color:var(--mute); font-size:11px; font-weight:600; margin-bottom:7px; }
+.exam-marks-page input[type=file] { width:100%; padding:6px; border:1px dashed var(--line); border-radius:8px; font-size:12px; background:var(--bg); color:var(--mute); }
+.exam-marks-page input[type=file]::file-selector-button { border:0; border-radius:5px; background:var(--card); color:var(--ink); padding:7px 10px; margin-right:9px; font:inherit; cursor:pointer; }
+.exam-marks-page .marks-register { overflow:hidden; border:1px solid var(--line); border-radius:14px; background:var(--card); box-shadow:0 3px 12px rgb(15 42 51 / 3%); }
+.marks-register-heading { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:22px; }
+.marks-register-heading p { margin:6px 0 0; color:var(--mute); font-size:12px; line-height:1.6; }
+.marks-student-count { display:inline-flex; align-items:center; gap:7px; padding:7px 10px; border:1px solid var(--line); border-radius:7px; color:var(--mute); font-size:12px; white-space:nowrap; }
+.exam-marks-page .student-table { min-width:850px; }
+.exam-marks-page .student-table th { background:var(--bg); color:var(--mute); font-size:10px; letter-spacing:.045em; padding:13px 18px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+.exam-marks-page .student-table td { padding:18px; vertical-align:middle; color:var(--ink); border-color:var(--line); }
+.exam-marks-page .student-table td:nth-child(3) { font-weight:600; min-width:150px; }
+.exam-marks-page .exam-subject-table input,.exam-marks-page .exam-subject-table select { min-height:42px; border-radius:8px; background:var(--card); border-color:var(--line); color:var(--ink); font-size:13px; }
+.exam-marks-page .exam-subject-table input[type=number] { width:120px; font-weight:600; }
+.exam-marks-page .exam-subject-table input[type=text] { width:100%; min-width:170px; }
+.exam-marks-page .exam-subject-table select { min-width:125px; }
+.exam-marks-page input::placeholder { color:var(--mute); font-weight:400; }
+.exam-marks-page .exam-subject-table input:disabled,.exam-marks-page .exam-subject-table select:disabled { background:var(--bg); color:var(--mute); }
+.exam-marks-page form>.exam-save-bar { padding:20px 22px; border:0; border-top:1px solid var(--line); border-radius:0; background:var(--bg); gap:20px; }
+.marks-save-copy { flex:1; min-width:200px; }
+.marks-save-copy strong { font-size:13px; font-weight:600; }
+.marks-save-copy p { color:var(--mute); font-size:12px; line-height:1.7; margin:5px 0 0; max-width:460px; }
+.marks-save-actions { display:flex; align-items:center; gap:10px; }
+.exam-marks-page .button-primary,.exam-marks-page .button-secondary { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:42px; padding:10px 16px; border-radius:8px; font-size:12px; white-space:nowrap; }
+@media(max-width:1000px) { .marks-overview { grid-template-columns:1fr 1fr; gap:22px 0; }.marks-overview>div:nth-child(2) { border:0; }.exam-marks-page .exam-upload-bar { align-items:stretch; }.exam-marks-page .exam-upload-bar form { flex-basis:100%; } }
+@media(max-width:640px) { .exam-marks-page .page-heading h1 { font-size:22px; }.marks-overview { padding:18px 0; }.marks-overview>div { padding:0 14px; }.marks-overview strong { font-size:20px; }.marks-overview .marks-deadline { font-size:12px; }.marks-register-heading { padding:18px; align-items:flex-start; }.marks-register-heading p { max-width:220px; }.exam-marks-page .exam-upload-bar { padding:18px; }.exam-marks-page .exam-upload-bar form { gap:14px; }.marks-file-field { min-width:100%; }.exam-marks-page .exam-upload-bar button { width:100%; }.exam-marks-page form>.exam-save-bar { padding:18px; }.marks-save-actions { width:100%; }.marks-save-actions>* { flex:1; }.exam-marks-page .exam-save-bar .button-primary { width:auto; margin:0; } }

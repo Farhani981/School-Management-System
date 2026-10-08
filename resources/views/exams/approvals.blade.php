@@ -1,0 +1,5 @@
+@extends('layouts.admin')
+@section('title','Marks Review')
+@section('content')
+<div class="exams-page"><div class="page-heading"><div><h1>Marks Review</h1><p>Review submitted papers, approve correct marks, or return them with a correction reason.</p></div></div>
+<section class="panel"><div class="student-table-scroll"><table class="student-table"><thead><tr><th>Exam / Subject</th><th>Class / Section</th><th>Teacher</th><th>Status</th><th></th></tr></thead><tbody>@forelse($papers as $paper)<tr><td>{{ $paper->examSubject->exam->name }}<small class="student-secondary">{{ $paper->examSubject->subject->name }}</small></td><td>{{ $paper->examSubject->schoolClass->name }} / {{ $paper->section->name }}</td><td>{{ $paper->teacher?->user?->name }}</td><td>{{ $paper->workflow_status }}</td><td><a class="button-secondary" href="{{ route('exams.review',$paper) }}">Review Marks</a></td></tr>@empty<tr><td colspan="5"><div class="exam-empty">No teacher submissions yet. Publish a datesheet so teachers can enter and submit marks.</div></td></tr>@endforelse</tbody></table></div><div class="exam-pagination">{{ $papers->links() }}</div></section></div>@endsection

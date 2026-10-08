@@ -1,0 +1,8 @@
+<section class="panel student-form" id="attendance" role="tabpanel" aria-labelledby="tab-attendance" data-profile-panel hidden><h2>Attendance</h2>
+@if($attendanceProfile)
+<form method="GET" action="{{ route('students.show',$student) }}#attendance" class="teacher-inline"><label for="profile-attendance-month">Month</label><input id="profile-attendance-month" name="attendance_month" type="month" value="{{ $attendanceProfile['month']->format('Y-m') }}"><button class="button-secondary">View</button></form>
+<p>Attendance: <strong>{{ $attendanceProfile['percentage']===null ? 'No recorded school days' : $attendanceProfile['percentage'].'%' }}</strong> · {{ $attendanceProfile['recorded'] }} recorded school days</p>
+<p class="photo-help">Present/Late count as one day, Half Day as half. Leave, Sundays and holidays are excluded from the percentage.</p>
+<div class="teacher-calendar">@foreach(['Mon','Tue','Wed','Thu','Fri','Sat','Sun'] as $label)<strong>{{ $label }}</strong>@endforeach @for($i=1;$i<$attendanceProfile['month']->isoWeekday();$i++)<div></div>@endfor
+@foreach($attendanceProfile['days'] as $day)<div class="teacher-calendar-day"><strong>{{ $day['date']->day }}</strong><span class="teacher-calendar-event">{{ $day['status'] ? ucwords(str_replace('_',' ',$day['status'])) : 'Unmarked' }}</span>@if($day['holiday'] || $day['sunday'])<small>{{ $day['holiday'] ?: 'Sunday' }}</small>@endif</div>@endforeach</div><a class="button-secondary" href="{{ route('students.attendance',$student) }}">Mark Class Attendance</a>
+@else<p>Sign in with an Admin account or a Teacher account assigned to this class to view attendance.</p><a class="button-secondary" href="{{ route('login') }}">Sign In</a>@endif</section>

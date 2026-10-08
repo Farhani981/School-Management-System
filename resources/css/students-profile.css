@@ -1,0 +1,75 @@
+/* Student Profile (EduDash Style) Stylesheet with Brand Teal #0A7EA4 */
+:root {
+    --brand-teal: #0A7EA4;
+    --brand-teal-hover: #086987;
+    --brand-teal-light: #e8f7fa;
+    --brand-teal-tint: #f0f9fb;
+    --brand-teal-border: #d0edf5;
+}
+
+/* Custom scrollbar for mobile tab bar */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Print-friendly Stylesheet */
+@media print {
+    body {
+        background: white !important;
+        color: #1e293b !important;
+        font-size: 11pt !important;
+    }
+
+    /* Hide non-printable elements */
+    .sidebar,
+    .topbar,
+    .page-footer,
+    #student-profile-tabs,
+    .student-actions,
+    #change-status-btn,
+    button,
+    .print-hide,
+    #ui-message,
+    #status-modal,
+    #login-modal,
+    .drawer-backdrop {
+        display: none !important;
+    }
+
+    .app-shell,
+    .workspace,
+    #main-content {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+    }
+
+    /* Print header */
+    .print-only {
+        display: block !important;
+    }
+
+    /* Ensure cards print cleanly with borders and no shadows */
+    .rounded-2xl, .rounded-xl {
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+        break-inside: avoid;
+        margin-bottom: 14pt !important;
+    }
+
+    /* Print specific color preservation */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    a {
+        text-decoration: none !important;
+        color: inherit !important;
+    }
+}

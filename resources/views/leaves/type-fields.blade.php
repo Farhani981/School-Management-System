@@ -1,0 +1,6 @@
+<div class="leave-fields">
+<label for="{{ $prefix }}-name">Name<input id="{{ $prefix }}-name" name="name" value="{{ $type?->name }}" maxlength="100" required></label>
+<label for="{{ $prefix }}-quota">Annual quota (days)<input id="{{ $prefix }}-quota" name="annual_quota" type="number" value="{{ $type?->annual_quota ?? 0 }}" min="0" max="9999" step="0.5" required></label>
+<label for="{{ $prefix }}-max">Maximum consecutive working days<input id="{{ $prefix }}-max" name="max_consecutive_days" type="number" value="{{ $type?->max_consecutive_days }}" min="0.5" max="9999" step="0.5"></label>
+<label for="{{ $prefix }}-notice">Minimum notice (days)<input id="{{ $prefix }}-notice" name="min_notice_days" type="number" value="{{ $type?->min_notice_days ?? 0 }}" min="0" max="365" required></label>
+</div><div class="leave-checks">@foreach(['is_paid'=>'Paid', 'requires_attachment'=>'Attachment required', 'allow_half_day'=>'Allow half day', 'allow_backdated'=>'Allow backdated', 'is_active'=>'Active'] as $key=>$label)<label for="{{ $prefix }}-{{ $key }}"><input id="{{ $prefix }}-{{ $key }}" type="checkbox" name="{{ $key }}" value="1" @checked($type ? $type->$key : in_array($key,['is_paid','is_active']))> {{ $label }}</label>@endforeach</div>

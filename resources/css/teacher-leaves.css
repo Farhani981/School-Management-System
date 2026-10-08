@@ -1,0 +1,40 @@
+.teacher-leave-page { color:var(--ink); }
+.teacher-leave-summary { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:15px; margin-bottom:22px; }
+.teacher-leave-stat { --leave-accent:#087f9b; --leave-soft:#e8f5f9; display:flex; align-items:center; gap:15px; padding:20px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+.teacher-leave-stat-approved { --leave-accent:#17775f; --leave-soft:#e8f6ee; }
+.teacher-leave-stat-pending { --leave-accent:#a76b21; --leave-soft:#fff3de; }
+.teacher-leave-stat-rejected { --leave-accent:#b44343; --leave-soft:#fdecec; }
+.teacher-leave-stat-icon { display:grid; place-items:center; width:44px; height:44px; border-radius:11px; background:var(--leave-soft); color:var(--leave-accent); flex-shrink:0; }
+.teacher-leave-stat strong { display:block; font-size:27px; font-weight:700; line-height:1.3; }
+.teacher-leave-stat div>span { display:block; margin-top:5px; font-size:13px; color:var(--mute); }
+.teacher-leave-history { border:1px solid var(--line); border-radius:14px; background:#fff; overflow:hidden; }
+.teacher-leave-history-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:21px 23px; border-bottom:1px solid var(--line); }
+.teacher-leave-history-heading h2 { font-size:18px; font-weight:650; }
+.teacher-leave-history-heading p { font-size:13px; color:var(--mute); margin-top:5px; }
+.teacher-leave-history-heading>span { white-space:nowrap; font-size:12px; color:var(--teal); padding:6px 10px; background:var(--soft); border-radius:7px; }
+.teacher-leave-list { display:grid; gap:16px; padding:22px; }
+.teacher-leave-request { border:1px solid var(--line); border-radius:11px; padding:20px; }
+.teacher-leave-request-heading { display:flex; align-items:center; justify-content:space-between; gap:15px; margin-bottom:20px; }
+.teacher-leave-type { display:flex; align-items:center; gap:12px; min-width:0; }
+.teacher-leave-type-icon { display:grid; place-items:center; width:42px; height:42px; border-radius:10px; background:var(--soft); color:var(--teal); flex-shrink:0; }
+.teacher-leave-type h3 { font-size:16px; font-weight:650; }
+.teacher-leave-type p { font-size:12px; color:var(--mute); margin-top:5px; }
+.teacher-leave-status { display:inline-flex; flex-shrink:0; padding:6px 12px; border-radius:20px; background:#edf1f5; color:#607586; font-size:12px; font-weight:600; }
+.teacher-leave-status-approved { background:#e5f6eb; color:#17775f; }
+.teacher-leave-status-pending { background:#fff3df; color:#98611d; }
+.teacher-leave-status-rejected { background:#fdecec; color:#b44343; }
+.teacher-leave-details { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin:0; padding:16px; background:#f7fafc; border-radius:9px; }
+.teacher-leave-details dt { font-size:12px; color:var(--mute); margin-bottom:6px; }
+.teacher-leave-details dd { margin:0; font-size:14px; font-weight:600; }
+.teacher-leave-half { font-size:12px; color:var(--mute); font-weight:400; }
+.teacher-leave-note { margin-top:17px; font-size:13px; }
+.teacher-leave-note strong { font-weight:600; }
+.teacher-leave-note p { color:var(--mute); margin-top:6px; line-height:1.7; overflow-wrap:anywhere; white-space:pre-line; }
+.teacher-leave-review { padding-top:15px; border-top:1px solid var(--line); }
+.teacher-leave-reviewed { margin-top:14px; font-size:12px; color:var(--mute); }
+.teacher-leave-empty { text-align:center; padding:35px 15px; color:var(--mute); }
+.teacher-leave-empty>svg { display:block; margin:0 auto 15px; color:var(--teal); }
+.teacher-leave-empty h3 { font-size:17px; color:var(--ink); margin-bottom:8px; }
+.teacher-leave-empty p { font-size:13px; line-height:1.7; }
+@media(max-width:1100px) { .teacher-leave-summary { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:639px) { .teacher-leave-summary { gap:10px; } .teacher-leave-stat { padding:14px; flex-direction:column; align-items:flex-start; gap:9px; } .teacher-leave-list { padding:14px; } .teacher-leave-request { padding:15px; } .teacher-leave-request-heading { align-items:flex-start; flex-wrap:wrap; } .teacher-leave-details { grid-template-columns:1fr; gap:13px; } .teacher-leave-history-heading { padding:17px; flex-wrap:wrap; } }

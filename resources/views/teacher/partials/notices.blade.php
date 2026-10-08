@@ -1,0 +1,1 @@
+@forelse($notices as $notice)<article class="attendance-mark-row"><div><strong>{{ $notice->title }}</strong><p>{{ $notice->description }}</p><small>{{ $notice->date->format('d M Y') }} · {{ ucfirst($notice->type) }}</small></div></article>@empty<p>No notices available.</p>@endforelse
