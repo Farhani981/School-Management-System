@@ -4,7 +4,7 @@
     <div class="exams-page exam-editor-page">
         <section class="panel exam-editor">
             <div class="exam-editor-heading">
-                <h1>{{ $exam->exists ? 'Edit Exam' : 'Add New Exam' }}</h1><a href="{{ route('exams.index') }}"
+                <div><h1>{{ $exam->exists ? 'Edit Exam' : 'Add New Exam' }}</h1><p>Enter the exam details and choose participating classes.</p></div><a href="{{ route('exams.index') }}"
                     aria-label="Close">&times;</a>
             </div>
             @include('subjects.partials.feedback')
@@ -19,9 +19,12 @@
                             name="name" value="{{ old('name', $exam->name) }}" required maxlength="150"
                             placeholder="Enter Exam name"></div>
                     <div class="admission-field exam-wide"><label for="exam-type">Exam Type</label><select id="exam-type" name="type" required>@foreach(\App\Models\Exam::TYPES as $value=>$label)<option value="{{ $value }}" @selected(old('type',$exam->type ?? 'monthly')===$value)>{{ $label }}</option>@endforeach</select></div>
-                    <div class="admission-field"><label for="exam-date">Exam Date</label><input id="exam-date"
+                    <div class="admission-field"><label for="exam-date">First Exam Date</label><input id="exam-date"
                             type="date" name="start_date"
                             value="{{ old('start_date', $exam->start_date?->format('Y-m-d')) }}" required></div>
+                    <div class="admission-field"><label for="exam-end">Last Exam Date</label><input
+                                id="exam-end" type="date" name="end_date"
+                                value="{{ old('end_date', $exam->end_date?->format('Y-m-d')) }}" required></div>
                     <div class="admission-field"><label for="exam-start-time">Start Time</label><input id="exam-start-time"
                             type="time" name="start_time"
                             value="{{ old('start_time', $exam->start_time ? substr($exam->start_time, 0, 5) : '') }}" required>
@@ -29,13 +32,7 @@
                     <div class="admission-field"><label for="exam-end-time">End Time</label><input id="exam-end-time"
                             type="time" name="end_time"
                             value="{{ old('end_time', $exam->end_time ? substr($exam->end_time, 0, 5) : '') }}" required></div>
-                    <div class="admission-field"><label for="exam-status">Status</label><select id="exam-status" disabled>
-                            <option>Pending</option>
-                        </select><small>Scheduled after paper dates are saved; active after publication on the exam
-                            date.</small></div>
-                        <div class="admission-field exam-wide"><label for="exam-end">Last Exam Date</label><input
-                                id="exam-end" type="date" name="end_date"
-                                value="{{ old('end_date', $exam->end_date?->format('Y-m-d')) }}" required></div>
+                    <p class="exam-editor-note exam-wide">The exam stays pending until you finish its subject setup and publish the datesheet.</p>
                     <div class="exam-wide">
                         <h2>Participating classes & sections</h2>
                         <p class="photo-help">Choose the classes taking this exam. Existing subject teachers can be loaded

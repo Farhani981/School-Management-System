@@ -14,14 +14,25 @@ return Application::configure(basePath: dirname(__DIR__))
         },
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->alias(['role' => \Spatie\Permission\Middleware\RoleMiddleware::class]);
-        $middleware->redirectGuestsTo(fn () => route('login'));
+        $middleware->alias([
+            'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+            'portal.student' => \App\Http\Middleware\ResolvePortalStudent::class,
+        ]);
+        $middleware->redirectGuestsTo(function ($request) {
+            if ($request->is('portal*') || $request->is('student*')) {
+                return route('portal.login');
+            }
+            return route('login');
+        });
         $middleware->redirectUsersTo(fn ($request) => \App\Services\LoginDestination::for($request->user()));
         $middleware->web(append: [\App\Http\Middleware\NoCache::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->respond(function ($response) {
             if ($response->getStatusCode() === 419 && ! request()->expectsJson()) {
+                if (request()->is('portal*') || request()->is('student*')) {
+                    return redirect()->route('portal.login')->with('status', 'Your session expired. Please sign in again.');
+                }
                 return redirect()->route('login')->with('status', 'Your session expired. Please sign in again.');
             }
             return $response;

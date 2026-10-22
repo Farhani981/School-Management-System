@@ -14,7 +14,7 @@ class FeeBillingController extends Controller
     {
         $request->validate(['search' => 'nullable|string|max:150', 'class_id' => 'nullable|integer|exists:school_classes,id',
             'status' => 'nullable|in:All,Unpaid,Partial,Paid,Overdue,Cancelled', 'month' => 'nullable|date_format:Y-m', 'page' => 'nullable|integer|min:1']);
-        return FeeVoucher::with(['payments', 'items'])->when($request->filled('class_id'), fn ($q) => $q->where('school_class_id', $request->class_id))
+        return FeeVoucher::with(['payments'])->when($request->filled('class_id'), fn ($q) => $q->where('school_class_id', $request->class_id))
             ->when($request->filled('month'), function ($q) use ($request) { [$year, $month] = explode('-', $request->month); $q->where('year', $year)->where('month', $month); })
             ->when($request->filled('search'), fn ($q) => $q->where(fn ($q) => $q->where('number', 'like', '%'.$request->search.'%')
                 ->orWhere('student_name', 'like', '%'.$request->search.'%')->orWhere('admission_no', 'like', '%'.$request->search.'%')))->orderByDesc('id')->get();
@@ -28,8 +28,12 @@ class FeeBillingController extends Controller
     {
         $rows = $this->vouchers($request);
         if ($request->filled('status') && $request->status !== 'All') $rows = $rows->filter(fn ($v) => $v->display_status === $request->status);
-        return view('fees.billing.index', ['vouchers' => $this->paginate($rows, $request), 'classes' => SchoolClass::orderBy('name')->get(),
-            'sessions' => AcademicSession::orderByDesc('is_current')->get(), 'module' => 'Vouchers']);
+        return view('fees.billing.index', [
+            'vouchers' => $this->paginate($rows, $request),
+            'classes' => \Illuminate\Support\Facades\Cache::remember('fee_billing_classes', 300, fn () => SchoolClass::orderBy('name')->get()),
+            'sessions' => \Illuminate\Support\Facades\Cache::remember('fee_billing_sessions', 300, fn () => AcademicSession::orderByDesc('is_current')->get()),
+            'module' => 'Vouchers'
+        ]);
     }
     public function generate(Request $request, FeeBillingService $service)
     {

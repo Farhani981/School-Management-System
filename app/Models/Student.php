@@ -86,6 +86,11 @@ class Student extends Model
         return $this->hasMany(StudentAttendance::class);
     }
 
+    public function leaveRequests(): HasMany
+    {
+        return $this->hasMany(StudentLeaveRequest::class);
+    }
+
     public function feeDiscounts(): HasMany
     {
         return $this->hasMany(StudentDiscount::class);
@@ -104,5 +109,12 @@ class Student extends Model
     public function histories(): HasMany
     {
         return $this->hasMany(StudentHistory::class);
+    }
+
+    public function parents()
+    {
+        return $this->belongsToMany(User::class, 'parent_student', 'student_id', 'parent_id')
+            ->withPivot('relationship', 'is_primary')
+            ->withTimestamps();
     }
 }

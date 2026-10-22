@@ -19,14 +19,14 @@
                 </div>
             @elseif ($label === 'Teachers')
                 @php
-                    $expanded = request()->routeIs('teachers.*');
+                    $expanded = request()->routeIs('teachers.*') && !request()->routeIs('teachers.leaves.*');
                 @endphp
                 <div @class(['nav-group', 'is-expanded' => $expanded])>
                     <button type="button" @class(['nav-item', 'nav-group-toggle', 'active-parent' => $expanded]) aria-expanded="{{ $expanded ? 'true' : 'false' }}" aria-controls="teachers-submenu" data-nav-toggle><x-icon name="teacher" size="16" /><span>Teachers</span><svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
                     <div id="teachers-submenu" class="nav-submenu" @if(!$expanded) inert @endif><div class="nav-submenu-inner">
-                        @foreach(['index' => ['All Teachers','teacher'], 'assignments.index' => ['Assignments','classes'], 'leaves.index' => ['Leaves','calendar'], 'payroll.index' => ['Payroll','wallet']] as $suffix => [$child, $childIcon])
+                        @foreach(['index' => ['All Teachers','teacher'], 'assignments.index' => ['Assignments','classes'], 'payroll.index' => ['Payroll','wallet']] as $suffix => [$child, $childIcon])
                             @php
-                                $active = $suffix === 'index' ? $expanded && !request()->routeIs('teachers.assignments.*','teachers.leaves.*','teachers.payroll.*') : request()->routeIs('teachers.'.str_replace('.index', '.*', $suffix));
+                                $active = $suffix === 'index' ? $expanded && !request()->routeIs('teachers.assignments.*','teachers.payroll.*') : request()->routeIs('teachers.'.str_replace('.index', '.*', $suffix));
                             @endphp
                             <a @class(['nav-item','nav-child','active' => $active]) href="{{ route('teachers.'.$suffix) }}" @if($active) aria-current="page" @endif><x-icon :name="$childIcon" size="15" /><span>{{ $child }}</span>@if($active)<span class="active-dot"></span>@endif</a>
                         @endforeach
@@ -34,12 +34,15 @@
                 </div>
             @elseif ($label === 'Leaves')
                 @php
-                    $expanded = request()->routeIs('leaves.*');
+                    $expanded = request()->routeIs('leaves.*', 'teachers.leaves.*', 'admin.student-leaves.*');
                 @endphp
                 <div @class(['nav-group', 'is-expanded' => $expanded])>
                     <button type="button" @class(['nav-item', 'nav-group-toggle', 'active-parent' => $expanded]) aria-expanded="{{ $expanded ? 'true' : 'false' }}" aria-controls="leaves-submenu" data-nav-toggle><x-icon name="calendar" size="16"/><span>Leaves</span><svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
                     <div id="leaves-submenu" class="nav-submenu" @if(!$expanded) inert @endif><div class="nav-submenu-inner">
-                        @foreach(['balances.index'=>'Leave Balances', 'types.index'=>'Leave Types'] as $suffix=>$child)<a @class(['nav-item','nav-child','active'=>request()->routeIs('leaves.'.str_replace('.index','.*',$suffix))]) href="{{ route('leaves.'.$suffix) }}" @if(request()->routeIs('leaves.'.str_replace('.index','.*',$suffix))) aria-current="page" @endif>{{ $child }}</a>@endforeach
+                        <a @class(['nav-item','nav-child','active'=>request()->routeIs('teachers.leaves.*')]) href="{{ route('teachers.leaves.index') }}" @if(request()->routeIs('teachers.leaves.*')) aria-current="page" @endif><x-icon name="calendar" size="15" /><span>Teacher Leaves</span>@if(request()->routeIs('teachers.leaves.*'))<span class="active-dot"></span>@endif</a>
+                        <a @class(['nav-item','nav-child','active'=>request()->routeIs('admin.student-leaves.*')]) href="{{ route('admin.student-leaves.index') }}" @if(request()->routeIs('admin.student-leaves.*')) aria-current="page" @endif><x-icon name="clipboard" size="15" /><span>Student Leaves</span>@if(request()->routeIs('admin.student-leaves.*'))<span class="active-dot"></span>@endif</a>
+                        <a @class(['nav-item','nav-child','active'=>request()->routeIs('leaves.balances.*')]) href="{{ route('leaves.balances.index') }}" @if(request()->routeIs('leaves.balances.*')) aria-current="page" @endif><x-icon name="wallet" size="15" /><span>Leave Balances</span>@if(request()->routeIs('leaves.balances.*'))<span class="active-dot"></span>@endif</a>
+                        <a @class(['nav-item','nav-child','active'=>request()->routeIs('leaves.types.*')]) href="{{ route('leaves.types.index') }}" @if(request()->routeIs('leaves.types.*')) aria-current="page" @endif><x-icon name="classes" size="15" /><span>Leave Types</span>@if(request()->routeIs('leaves.types.*'))<span class="active-dot"></span>@endif</a>
                     </div></div>
                 </div>
             @elseif ($label === 'Examinations')
@@ -52,11 +55,11 @@
                 </div>
             @elseif ($label === 'Attendance')
                 @php
-                    $expanded = request()->routeIs('attendance.*');
+                    $expanded = request()->routeIs('attendance.*') && !request()->routeIs('admin.student-leaves.*');
                 @endphp
                 <div @class(['nav-group','is-expanded'=>$expanded])>
                     <button type="button" @class(['nav-item','nav-group-toggle','active-parent'=>$expanded]) aria-expanded="{{ $expanded ? 'true' : 'false' }}" aria-controls="attendance-submenu" data-nav-toggle><x-icon name="calendar" size="16" /><span>Attendance</span><svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
-                    <div id="attendance-submenu" class="nav-submenu" @if(!$expanded) inert @endif><div class="nav-submenu-inner">@foreach(['students.index'=>['Student Attendance','users'],'staff.index'=>['Staff Attendance','teacher'],'reports.index'=>['Reports','chart']] as $suffix=>[$child,$childIcon])<a @class(['nav-item','nav-child','active'=>request()->routeIs('attendance.'.str_replace('.index','.*',$suffix))]) href="{{ route('attendance.'.$suffix) }}"><x-icon :name="$childIcon" size="15" /><span>{{ $child }}</span></a>@endforeach</div></div>
+                    <div id="attendance-submenu" class="nav-submenu" @if(!$expanded) inert @endif><div class="nav-submenu-inner">@foreach(['students.index'=>['Student Attendance','users'],'staff.index'=>['Staff Attendance','teacher'],'reports.index'=>['Reports','chart']] as $suffix=>[$child,$childIcon])<a @class(['nav-item','nav-child','active'=>request()->routeIs('attendance.'.str_replace('.index','.*',$suffix))]) href="{{ route('attendance.'.$suffix) }}"><x-icon :name="$childIcon" size="15" /><span>{{ $child }}</span></a>@endforeach<a @class(['nav-item','nav-child','active'=>request()->routeIs('admin.student-leaves.*')]) href="{{ route('admin.student-leaves.index') }}"><x-icon name="clipboard" size="15" /><span>Student Leaves</span></a></div></div>
                 </div>
             @elseif ($label === 'Fees')
                 @php
@@ -125,18 +128,17 @@
             @endif
         @endforeach
         @if(auth()->user()?->hasAnyRole(['Admin', 'Principal']))
-    <a
-        @class([
-            'nav-item',
-            'active' => request()->routeIs('accounts.*'),
-        ])
-        href="{{ route('accounts.expenses.index') }}"
-        @if(request()->routeIs('accounts.*')) aria-current="page" @endif
-    >
-        <x-icon name="wallet" size="16" />
-        <span>Accounts</span>
-    </a>
-@endif
+            @php($expanded = request()->routeIs('accounts.*'))
+            <div @class(['nav-group', 'is-expanded' => $expanded])>
+                <button type="button" @class(['nav-item', 'nav-group-toggle', 'active-parent' => $expanded]) aria-expanded="{{ $expanded ? 'true' : 'false' }}" aria-controls="accounts-submenu" data-nav-toggle><x-icon name="wallet" size="16" /><span>Accounts</span><svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button>
+                <div id="accounts-submenu" class="nav-submenu" @if(!$expanded) inert @endif><div class="nav-submenu-inner">
+                    @foreach(['dashboard' => 'Dashboard', 'income.index' => 'Income', 'expenses.index' => 'Expenses', 'salaries.index' => 'Staff Salary', 'reports.index' => 'Reports'] as $suffix => $child)
+                        @php($active = request()->routeIs('accounts.'.str_replace('.index', '.*', $suffix)))
+                        <a @class(['nav-item', 'nav-child', 'active' => $active]) href="{{ route('accounts.'.$suffix) }}" @if($active) aria-current="page" @endif><span>{{ $child }}</span>@if($active)<span class="active-dot"></span>@endif</a>
+                    @endforeach
+                </div></div>
+            </div>
+        @endif
     </nav>
     <div class="sidebar-bottom"><span class="school-status"><span></span> School workspace</span><div class="sidebar-note">A little more organized.<br>A lot more possible.</div><button type="button" class="help-button" data-message="Use the sidebar to manage students, teachers, academics, attendance and calendar events."><x-icon name="help" size="15" /> Need a hand?</button></div>
 </aside>

@@ -8,6 +8,8 @@ use App\Http\Controllers\AccountController;
 Route::middleware('guest')->group(function () {
     Route::get('login', [\App\Http\Controllers\Auth\LoginController::class, 'index'])->name('login');
     Route::post('login', [\App\Http\Controllers\Auth\LoginController::class, 'store'])->name('login.store');
+    Route::get('register', [\App\Http\Controllers\Auth\LoginController::class, 'register'])->name('register');
+    Route::post('register', [\App\Http\Controllers\Auth\LoginController::class, 'registerStore'])->middleware('throttle:5,1')->name('register.store');
     Route::get('forgot-password', [\App\Http\Controllers\Auth\PasswordController::class, 'request'])->name('password.request');
     Route::post('forgot-password', [\App\Http\Controllers\Auth\PasswordController::class, 'email'])->middleware('throttle:5,1')->name('password.email');
     Route::get('reset-password/{token}', [\App\Http\Controllers\Auth\PasswordController::class, 'reset'])->name('password.reset');
@@ -31,6 +33,15 @@ Route::get('/', function (\Illuminate\Http\Request $request) {
     if ($user->hasAnyRole(['Student','Parent'])) return redirect()->route('portal.home');
     abort(403, 'Your account does not have panel access.');
 })->middleware('auth')->name('dashboard.home');
+
+// Friendly panel entry URLs for users who open /admin or /teacher directly.
+Route::middleware(['auth', 'role:Admin|Principal'])->group(function () {
+    Route::get('/admin', fn () => redirect()->route('dashboard'))->name('admin.home');
+    Route::get('/admin/dashboard', fn () => redirect()->route('dashboard'))->name('admin.dashboard');
+});
+Route::middleware(['auth', 'role:Teacher'])->group(function () {
+    Route::get('/teacher', fn () => redirect()->route('teacher.dashboard'))->name('teacher.home');
+});
 
 Route::middleware('auth')->prefix('library')->name('library.')->group(function () {
     Route::get('/', fn () => redirect()->route('library.books.index'))
@@ -226,9 +237,95 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/students/{student}', [StudentController::class, 'show'])->name('students.show');
 });
 // Portal access for Students and Parents
-Route::view('portal', 'portal.home')->middleware(['auth','role:Student|Parent'])->name('portal.home');
+Route::prefix('portal')->name('portal.')->group(function () {
+    Route::middleware('guest')->group(function () {
+        Route::get('/login', [\App\Http\Controllers\Portal\PortalAuthController::class, 'showLogin'])->name('login');
+        Route::post('/login', [\App\Http\Controllers\Portal\PortalAuthController::class, 'login'])->name('login.submit');
+        Route::get('/forgot-password', [\App\Http\Controllers\Portal\PortalAuthController::class, 'showForgotPassword'])->name('password.forgot');
+        Route::post('/forgot-password', [\App\Http\Controllers\Portal\PortalAuthController::class, 'sendResetInstructions'])->name('password.forgot.submit');
+    });
+
+    Route::middleware(['auth', 'portal.student'])->group(function () {
+        Route::post('/logout', [\App\Http\Controllers\Portal\PortalAuthController::class, 'logout'])->name('logout');
+        Route::post('/switch-child', [\App\Http\Controllers\Portal\PortalAuthController::class, 'switchChild'])->name('switch-child');
+        Route::get('/change-password', [\App\Http\Controllers\Portal\PortalAuthController::class, 'showChangePassword'])->name('password.change');
+        Route::post('/change-password', [\App\Http\Controllers\Portal\PortalAuthController::class, 'updatePassword'])->name('password.update');
+
+        Route::get('/', [\App\Http\Controllers\StudentPortalController::class, 'home'])->name('home');
+        Route::get('/dashboard', fn () => redirect()->route('portal.home'))->name('dashboard');
+        Route::get('/attendance', [\App\Http\Controllers\StudentPortalController::class, 'attendance'])->name('attendance');
+        Route::get('/performance', [\App\Http\Controllers\StudentPortalController::class, 'performance'])->name('performance');
+        Route::get('/quizzes', [\App\Http\Controllers\StudentPortalController::class, 'quizzes'])->name('quizzes');
+        Route::get('/results', [\App\Http\Controllers\StudentPortalController::class, 'results'])->name('results');
+        Route::get('/study-material', [\App\Http\Controllers\StudentPortalController::class, 'studyMaterial'])->name('study-material');
+        Route::get('/fees', [\App\Http\Controllers\StudentPortalController::class, 'fees'])->name('fees');
+        Route::get('/timetable', [\App\Http\Controllers\StudentPortalController::class, 'timetable'])->name('timetable');
+        Route::get('/library', [\App\Http\Controllers\StudentPortalController::class, 'library'])->name('library');
+        Route::get('/profile', [\App\Http\Controllers\StudentPortalController::class, 'profile'])->name('profile');
+        Route::get('/api/dashboard', [\App\Http\Controllers\StudentPortalController::class, 'dashboardApi'])->name('api.dashboard');
+        Route::get('/api/attendance', [\App\Http\Controllers\StudentPortalController::class, 'attendanceMonthApi'])->name('api.attendance');
+        Route::get('/api/attendance/summary', [\App\Http\Controllers\StudentPortalController::class, 'attendanceSummaryApi'])->name('api.attendance.summary');
+        Route::get('/api/leave', [\App\Http\Controllers\StudentPortalController::class, 'leaveList'])->name('api.leave.index');
+        Route::post('/api/leave', [\App\Http\Controllers\StudentPortalController::class, 'leaveStore'])->name('api.leave.store');
+        Route::patch('/api/leave/{id}/cancel', [\App\Http\Controllers\StudentPortalController::class, 'leaveCancel'])->name('api.leave.cancel');
+        Route::get('/api/leave/{id}/attachment', [\App\Http\Controllers\StudentPortalController::class, 'leaveAttachment'])->name('api.leave.attachment');
+        Route::get('/api/fees/summary', [\App\Http\Controllers\StudentPortalController::class, 'feeSummaryApi'])->name('api.fees.summary');
+        Route::get('/api/fees/challans', [\App\Http\Controllers\StudentPortalController::class, 'feeChallansApi'])->name('api.fees.challans');
+        Route::get('/api/fees/challans/{id}', [\App\Http\Controllers\StudentPortalController::class, 'feeChallanDetailApi'])->name('api.fees.challans.show');
+        Route::get('/api/fees/challans/{id}/pdf', [\App\Http\Controllers\StudentPortalController::class, 'feeChallanPdf'])->name('api.fees.challans.pdf');
+        Route::get('/api/fees/payments', [\App\Http\Controllers\StudentPortalController::class, 'feePaymentsApi'])->name('api.fees.payments');
+        Route::get('/api/fees/payments/{id}/receipt', [\App\Http\Controllers\StudentPortalController::class, 'feePaymentReceiptPdf'])->name('api.fees.payments.receipt');
+        Route::get('/unlinked', [\App\Http\Controllers\StudentPortalController::class, 'unlinked'])->name('unlinked');
+    });
+});
+
+// Student Portal Endpoints (/student/*)
+Route::middleware(['auth', 'portal.student'])->prefix('student')->name('student.')->group(function () {
+    Route::get('/', fn () => redirect()->route('portal.home'))->name('home');
+    Route::get('/dashboard', [\App\Http\Controllers\StudentPortalController::class, 'dashboardApi'])->name('dashboard');
+    Route::get('/attendance', [\App\Http\Controllers\StudentPortalController::class, 'attendanceMonthApi'])->name('attendance');
+    Route::get('/attendance/summary', [\App\Http\Controllers\StudentPortalController::class, 'attendanceSummaryApi'])->name('attendance.summary');
+    Route::get('/leave', [\App\Http\Controllers\StudentPortalController::class, 'leaveList'])->name('leave.index');
+    Route::post('/leave', [\App\Http\Controllers\StudentPortalController::class, 'leaveStore'])->name('leave.store');
+    Route::patch('/leave/{id}/cancel', [\App\Http\Controllers\StudentPortalController::class, 'leaveCancel'])->name('leave.cancel');
+    Route::get('/leave/{id}/attachment', [\App\Http\Controllers\StudentPortalController::class, 'leaveAttachment'])->name('leave.attachment');
+    
+    // Fees APIs (Task 1)
+    Route::get('/fees/summary', [\App\Http\Controllers\StudentPortalController::class, 'feeSummaryApi'])->name('fees.summary');
+    Route::get('/fees/challans', [\App\Http\Controllers\StudentPortalController::class, 'feeChallansApi'])->name('fees.challans');
+    Route::get('/fees/challans/{id}', [\App\Http\Controllers\StudentPortalController::class, 'feeChallanDetailApi'])->name('fees.challans.show');
+    Route::get('/fees/challans/{id}/pdf', [\App\Http\Controllers\StudentPortalController::class, 'feeChallanPdf'])->name('fees.challans.pdf');
+    Route::get('/fees/payments', [\App\Http\Controllers\StudentPortalController::class, 'feePaymentsApi'])->name('fees.payments');
+    Route::get('/fees/payments/{id}/receipt', [\App\Http\Controllers\StudentPortalController::class, 'feePaymentReceiptPdf'])->name('fees.payments.receipt');
+
+    Route::get('/performance', fn () => redirect()->route('portal.performance'))->name('performance');
+    Route::get('/quizzes', fn () => redirect()->route('portal.quizzes'))->name('quizzes');
+    Route::get('/results', fn () => redirect()->route('portal.results'))->name('results');
+    Route::get('/study-material', fn () => redirect()->route('portal.study-material'))->name('study-material');
+    Route::get('/fees', fn () => redirect()->route('portal.fees'))->name('fees');
+    Route::get('/timetable', fn () => redirect()->route('portal.timetable'))->name('timetable');
+    Route::get('/library', fn () => redirect()->route('portal.library'))->name('library');
+    Route::get('/profile', fn () => redirect()->route('portal.profile'))->name('profile');
+});
+
+// Admin Student Leave Requests
+Route::middleware(['auth', 'role:Admin|Principal'])->prefix('admin/student-leaves')->name('admin.student-leaves.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Admin\StudentLeaveApprovalController::class, 'index'])->name('index');
+    Route::post('/{id}/review', [\App\Http\Controllers\Admin\StudentLeaveApprovalController::class, 'update'])->name('update');
+    Route::get('/{id}/attachment', [\App\Http\Controllers\Admin\StudentLeaveApprovalController::class, 'attachment'])->name('attachment');
+});
 ///Accounts Management
-Route::prefix('accounts')->name('accounts.')->group(function () {
+Route::middleware(['auth', 'role:Admin|Principal'])->prefix('accounts')->name('accounts.')->group(function () {
+    $overview = \App\Http\Controllers\AccountOverviewController::class;
+    Route::get('/', [$overview, 'dashboard'])->name('dashboard');
+    Route::get('/income', [$overview, 'income'])->name('income.index');
+    Route::post('/income', [$overview, 'storeIncome'])->name('income.store');
+    Route::get('/transactions', fn () => redirect()->route('accounts.reports.index'))->name('transactions.index');
+    Route::get('/reports', [$overview, 'transactions'])->name('reports.index');
+    Route::get('/staff-salary', [$overview, 'salaries'])->name('salaries.index');
+    Route::post('/staff-salary/generate', [$overview, 'generate'])->name('salaries.generate');
+    Route::post('/staff-salary/{payroll}/paid', [$overview, 'pay'])->name('salaries.paid');
+    Route::get('/attachments/{type}/{id}', [$overview, 'attachment'])->name('attachments.show');
     Route::get('/expenses', [AccountController::class, 'index'])
         ->name('expenses.index');
 

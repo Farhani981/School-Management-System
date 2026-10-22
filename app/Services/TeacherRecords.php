@@ -40,6 +40,8 @@ class TeacherRecords
                     $teacher->user_id = $user->id;
                 }
                 $teacher->save();
+                \Illuminate\Support\Facades\Cache::forget('teachers_dropdown_list');
+                \Illuminate\Support\Facades\Cache::forget('teacher_form_options');
                 $salary = ['basic_salary' => $data['basic_salary']];
                 foreach (SalaryStructure::ALLOWANCE_FIELDS as $field) {
                     $salary[$field] = $data[$field] ?? ($field === 'other_allowance' ? ($data['allowances'] ?? 0) : 0);

@@ -38,3 +38,373 @@
 .teacher-leave-empty p { font-size:13px; line-height:1.7; }
 @media(max-width:1100px) { .teacher-leave-summary { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media(max-width:639px) { .teacher-leave-summary { gap:10px; } .teacher-leave-stat { padding:14px; flex-direction:column; align-items:flex-start; gap:9px; } .teacher-leave-list { padding:14px; } .teacher-leave-request { padding:15px; } .teacher-leave-request-heading { align-items:flex-start; flex-wrap:wrap; } .teacher-leave-details { grid-template-columns:1fr; gap:13px; } .teacher-leave-history-heading { padding:17px; flex-wrap:wrap; } }
+
+/* ========================================================
+   Teacher Leaves Filter Card & Controls
+   ======================================================== */
+.teacher-leaves-filter-card {
+    background: var(--card, #ffffff);
+    border: 1px solid var(--line, #e2e8f0);
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.filter-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line, #e2e8f0);
+}
+
+.filter-card-title {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink, #0f2a33);
+    margin: 0;
+}
+
+.active-filters-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--soft, #e4f3f7);
+    color: var(--teal, #0b7a96);
+    border: 1px solid rgba(11, 122, 150, 0.18);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 9999px;
+    letter-spacing: 0.01em;
+}
+
+/* 2x2 Desktop Grid, 1 Column Mobile */
+.filter-controls-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 24px;
+    margin-bottom: 18px;
+}
+
+@media (max-width: 768px) {
+    .filter-controls-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+.filter-control-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.control-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.filter-label {
+    font-size: 13.5px;
+    font-weight: 650;
+    color: var(--ink, #0f2a33);
+    margin-bottom: 6px;
+    display: block;
+}
+
+.control-label-row .filter-label {
+    margin-bottom: 0;
+}
+
+.btn-this-month {
+    background: transparent;
+    border: none;
+    color: var(--teal, #0b7a96);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.15s ease;
+}
+
+.btn-this-month:hover {
+    color: #07596f;
+}
+
+/* Month Input with Previous / Next Arrows */
+.month-input-wrapper {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--line, #cbd5e1);
+    border-radius: 9px;
+    background: var(--card, #ffffff);
+    overflow: hidden;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.month-input-wrapper:focus-within {
+    border-color: var(--teal, #0b7a96);
+    box-shadow: 0 0 0 3px rgba(11, 122, 150, 0.15);
+}
+
+.btn-month-nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8fafc;
+    border: none;
+    padding: 0 12px;
+    color: #475569;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    user-select: none;
+}
+
+.btn-month-nav:hover {
+    background: #e2e8f0;
+    color: var(--ink, #0f2a33);
+}
+
+.btn-month-nav:first-child {
+    border-right: 1px solid var(--line, #e2e8f0);
+}
+
+.btn-month-nav:last-child {
+    border-left: 1px solid var(--line, #e2e8f0);
+}
+
+.filter-input.month-picker-field {
+    border: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    flex: 1;
+    min-height: 40px;
+    padding: 8px 12px;
+    font-size: 14px;
+    box-shadow: none !important;
+    background: transparent;
+    color: var(--ink, #0f2a33);
+}
+
+.filter-select {
+    width: 100%;
+    min-height: 40px;
+    border: 1px solid var(--line, #cbd5e1);
+    border-radius: 9px;
+    padding: 8px 12px;
+    font-size: 14px;
+    background: var(--card, #ffffff);
+    color: var(--ink, #0f2a33);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.filter-select:focus {
+    border-color: var(--teal, #0b7a96);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(11, 122, 150, 0.15);
+}
+
+.control-helper-text {
+    font-size: 12px;
+    color: var(--mute, #64748b);
+    margin-top: 5px;
+    line-height: 1.4;
+}
+
+/* Actions Row */
+.filter-actions-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line, #f1f5f9);
+}
+
+.btn-filter-reset {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    padding: 0 16px;
+    border-radius: 8px;
+    border: 1px solid var(--line, #cbd5e1);
+    background: #f8fafc;
+    color: #475569;
+    font-size: 13.5px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.btn-filter-reset:hover {
+    background: #f1f5f9;
+    border-color: #94a3b8;
+    color: #1e293b;
+}
+
+.btn-filter-apply {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    padding: 0 20px;
+    border-radius: 8px;
+    border: none;
+    background: #2563EB;
+    color: #ffffff;
+    font-size: 13.5px;
+    font-weight: 650;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
+    transition: background 0.15s, transform 0.05s;
+}
+
+.btn-filter-apply:hover {
+    background: #1D4ED8;
+}
+
+.btn-filter-apply:active {
+    transform: translateY(1px);
+}
+
+/* Teacher Balance Summary Card */
+.teacher-balance-summary-card {
+    margin-top: 20px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    border: 1px solid #cce5ec;
+    background: #f2f9fb;
+}
+
+.summary-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.summary-card-header strong {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink, #0f2a33);
+}
+
+.summary-card-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 12px;
+}
+
+.balance-badge-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #ffffff;
+    border: 1px solid #d4e7ee;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #1e293b;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+}
+
+.balance-badge-item strong {
+    color: var(--teal, #0b7a96);
+    font-weight: 650;
+}
+
+.balance-badge-item.badge-no-limit {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    color: #64748b;
+}
+
+.summary-card-note {
+    font-size: 12px;
+    color: #64748b;
+    margin: 10px 0 0 0;
+}
+
+/* Empty State */
+.leave-empty-state {
+    text-align: center;
+    padding: 45px 20px;
+}
+
+.leave-empty-state .empty-state-icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: var(--soft, #e4f3f7);
+    color: var(--teal, #0b7a96);
+    margin-bottom: 14px;
+}
+
+.leave-empty-state h3 {
+    font-size: 16.5px;
+    font-weight: 700;
+    color: var(--ink, #0f2a33);
+    margin: 0 0 6px 0;
+}
+
+.leave-empty-state p {
+    font-size: 13.5px;
+    color: var(--mute, #64748b);
+    max-width: 420px;
+    margin: 0 auto 16px auto;
+}
+
+.calendar-empty-banner {
+    padding: 18px 22px;
+    border-radius: 10px;
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    margin-bottom: 18px;
+    text-align: center;
+    font-size: 13.5px;
+    color: #475569;
+}
+
+/* Status Badges */
+.student-status.badge-pending,
+.teacher-calendar-event.badge-pending {
+    background: #fffbeb;
+    color: #b45309;
+    border: 1px solid #fde68a;
+}
+
+.student-status.badge-approved,
+.teacher-calendar-event.badge-approved {
+    background: #ecfdf5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+}
+
+.student-status.badge-rejected,
+.teacher-calendar-event.badge-rejected {
+    background: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+}
+
+.student-status.badge-cancelled,
+.teacher-calendar-event.badge-cancelled {
+    background: #f1f5f9;
+    color: #475569;
+    border: 1px solid #e2e8f0;
+}

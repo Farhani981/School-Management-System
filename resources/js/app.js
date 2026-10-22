@@ -214,7 +214,7 @@ document.addEventListener('click', event => {
 const search = document.querySelector('#workspace-search');
 const input = search?.querySelector('input');
 const results = document.querySelector('#search-results');
-const navigation = [...document.querySelectorAll('.nav-item')];
+const navigation = [...document.querySelectorAll('.nav-item, .portal-nav-link')];
 function searchNavigation() {
     const query = input.value.trim().toLowerCase();
     results.replaceChildren();
@@ -589,10 +589,31 @@ document.querySelectorAll('[data-nav-toggle]').forEach(button => {
             body.classList.remove('sidebar-collapsed');
             if (!desktop.matches) body.classList.add('drawer-open');
         }
-        const expanded = compact || button.getAttribute('aria-expanded') !== 'true';
-        button.setAttribute('aria-expanded', String(expanded));
-        button.closest('.nav-group').classList.toggle('is-expanded', expanded);
-        document.getElementById(button.getAttribute('aria-controls')).inert = !expanded;
+        const currentGroup = button.closest('.nav-group');
+        const willExpand = compact || button.getAttribute('aria-expanded') !== 'true';
+
+        // Accordion behavior: close other open dropdowns when expanding this one
+        if (willExpand) {
+            document.querySelectorAll('[data-nav-toggle]').forEach(otherBtn => {
+                if (otherBtn !== button) {
+                    otherBtn.setAttribute('aria-expanded', 'false');
+                    const otherGroup = otherBtn.closest('.nav-group');
+                    if (otherGroup) {
+                        otherGroup.classList.remove('is-expanded');
+                    }
+                    const otherControls = otherBtn.getAttribute('aria-controls');
+                    if (otherControls) {
+                        const otherSubmenu = document.getElementById(otherControls);
+                        if (otherSubmenu) otherSubmenu.inert = true;
+                    }
+                }
+            });
+        }
+
+        button.setAttribute('aria-expanded', String(willExpand));
+        currentGroup?.classList.toggle('is-expanded', willExpand);
+        const submenu = document.getElementById(button.getAttribute('aria-controls'));
+        if (submenu) submenu.inert = !willExpand;
         syncNavigation();
     });
 });

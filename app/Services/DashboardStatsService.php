@@ -17,6 +17,9 @@ class DashboardStatsService
     public static function invalidate(): void
     {
         Cache::forever('dashboard:revision', (string) Str::uuid());
+        Cache::forget('student_form_options');
+        Cache::forget('fee_billing_classes');
+        Cache::forget('fee_billing_sessions');
     }
 
     private function cached(string $widget, array $empty, callable $query): array
@@ -34,23 +37,41 @@ class DashboardStatsService
         });
     }
 
+    private static array $tableExists = [];
+    private static array $columnExists = [];
+    private ?array $currentSession = null;
+
+    private function hasTable(string $table): bool
+    {
+        return self::$tableExists[$table] ??= Schema::hasTable($table);
+    }
+
+    private function hasColumn(string $table, string $column): bool
+    {
+        return self::$columnExists["{$table}.{$column}"] ??= Schema::hasColumn($table, $column);
+    }
+
     private function session(): array
     {
-        if (! Schema::hasTable('academic_sessions') || ! Schema::hasColumn('academic_sessions', 'is_current')) {
-            return ['scoped' => false, 'id' => null];
+        if ($this->currentSession !== null) {
+            return $this->currentSession;
         }
 
-        return ['scoped' => true, 'id' => DB::table('academic_sessions')->where('is_current', true)->orderByDesc('id')->value('id')];
+        if (! $this->hasTable('academic_sessions') || ! $this->hasColumn('academic_sessions', 'is_current')) {
+            return $this->currentSession = ['scoped' => false, 'id' => null];
+        }
+
+        return $this->currentSession = ['scoped' => true, 'id' => DB::table('academic_sessions')->where('is_current', true)->orderByDesc('id')->value('id')];
     }
 
     private function studentsQuery(): Builder
     {
         $q = DB::table('students')->where('status', 'Active');
-        if (Schema::hasColumn('students', 'deleted_at')) {
+        if ($this->hasColumn('students', 'deleted_at')) {
             $q->whereNull('deleted_at');
         }
         $session = $this->session();
-        if ($session['scoped'] && Schema::hasColumn('students', 'academic_session_id')) {
+        if ($session['scoped'] && $this->hasColumn('students', 'academic_session_id')) {
             $session['id'] ? $q->where('academic_session_id', $session['id']) : $q->whereRaw('1 = 0');
         }
 
@@ -60,10 +81,10 @@ class DashboardStatsService
     private function activeQuery(string $table): Builder
     {
         $q = DB::table($table);
-        if (Schema::hasColumn($table, 'status')) {
+        if ($this->hasColumn($table, 'status')) {
             $q->where('status', 'Active');
         }
-        if (Schema::hasColumn($table, 'deleted_at')) {
+        if ($this->hasColumn($table, 'deleted_at')) {
             $q->whereNull('deleted_at');
         }
 
@@ -75,7 +96,7 @@ class DashboardStatsService
         $empty = ['total' => 0, 'boys' => 0, 'girls' => 0, 'empty' => true];
 
         return $this->cached('students', $empty, function () use ($empty) {
-            if (! Schema::hasTable('students')) {
+            if (! $this->hasTable('students')) {
                 return $empty;
             }
             $groups = $this->studentsQuery()->select('gender')->selectRaw('COUNT(*) AS total')->groupBy('gender')->pluck('total', 'gender');
@@ -89,13 +110,13 @@ class DashboardStatsService
         $empty = ['total' => 0, 'assigned' => 0, 'empty' => true];
 
         return $this->cached('teachers', $empty, function () use ($empty) {
-            if (! Schema::hasTable('teachers')) {
+            if (! $this->hasTable('teachers')) {
                 return $empty;
             }
             $total = $this->activeQuery('teachers')->count();
 
             $assigned = 0;
-            if (Schema::hasTable('teacher_assignments')) {
+            if ($this->hasTable('teacher_assignments')) {
                 $session = $this->session();
                 $assigned = $this->activeQuery('teachers')->whereIn('id', DB::table('teacher_assignments')->select('teacher_id')
                     ->when($session['scoped'], fn ($q) => $q->where('session_id', $session['id'])))->count();
@@ -109,11 +130,11 @@ class DashboardStatsService
         $empty = ['total' => 0, 'sections' => 0, 'empty' => true];
 
         return $this->cached('classes', $empty, function () use ($empty) {
-            if (! Schema::hasTable('school_classes')) {
+            if (! $this->hasTable('school_classes')) {
                 return $empty;
             }
             $total = $this->activeQuery('school_classes')->count();
-            $sections = Schema::hasTable('school_sections') ? $this->activeQuery('school_sections')->count() : 0;
+            $sections = $this->hasTable('school_sections') ? $this->activeQuery('school_sections')->count() : 0;
 
             return ['total' => $total, 'sections' => $sections, 'empty' => $total === 0];
         });
@@ -130,12 +151,12 @@ class DashboardStatsService
             $total = $this->students()['total'];
             $counts = $empty['counts'];
             $marked = 0;
-            if (Schema::hasTable('student_attendances') && Schema::hasTable('students')) {
+            if ($this->hasTable('student_attendances') && $this->hasTable('students')) {
                 $date = $this->column('student_attendances', ['date', 'attendance_date']);
                 if ($date) {
-                    $q = DB::table('student_attendances')->whereDate($date, now()->toDateString())->whereIn('student_id', $this->studentsQuery()->select('id'));
+                    $q = DB::table('student_attendances')->where($date, now()->toDateString())->whereIn('student_id', $this->studentsQuery()->select('id'));
                     $session = $this->session();
-                    if ($session['scoped'] && $session['id'] && Schema::hasColumn('student_attendances', 'academic_session_id')) {
+                    if ($session['scoped'] && $session['id'] && $this->hasColumn('student_attendances', 'academic_session_id')) {
                         $q->where(fn ($q) => $q->where('academic_session_id', $session['id'])->orWhereNull('academic_session_id'));
                     }
                     $groups = $q->selectRaw('LOWER(status) AS attendance_status, COUNT(*) AS total')->groupByRaw('LOWER(status)')->pluck('total', 'attendance_status');
@@ -157,7 +178,7 @@ class DashboardStatsService
     private function column(string $table, array $candidates): ?string
     {
         foreach ($candidates as $column) {
-            if (Schema::hasColumn($table, $column)) {
+            if ($this->hasColumn($table, $column)) {
                 return $column;
             }
         }
@@ -169,13 +190,13 @@ class DashboardStatsService
     {
         $start = CarbonImmutable::createFromFormat('!Y-m', $month)->startOfMonth();
         $q = DB::table($table)->where($date, '>=', $start->toDateString())->where($date, '<', $start->addMonth()->toDateString());
-        if (Schema::hasColumn($table, 'deleted_at')) {
+        if ($this->hasColumn($table, 'deleted_at')) {
             $q->whereNull('deleted_at');
         }
         $session = $this->session();
-        if ($session['scoped'] && Schema::hasColumn($table, 'academic_session_id')) {
+        if ($session['scoped'] && $this->hasColumn($table, 'academic_session_id')) {
             $session['id'] ? $q->where('academic_session_id', $session['id']) : $q->whereRaw('1 = 0');
-        } elseif ($session['scoped'] && Schema::hasColumn($table, 'student_id') && Schema::hasTable('students')) {
+        } elseif ($session['scoped'] && $this->hasColumn($table, 'student_id') && $this->hasTable('students')) {
             $q->whereIn('student_id', $this->studentsQuery()->select('id'));
         }
 
@@ -189,7 +210,7 @@ class DashboardStatsService
 
         return $this->cached('fees:'.$month, $empty, function () use ($empty, $month) {
             $result = $empty;
-            if (Schema::hasTable('fee_vouchers')) {
+            if ($this->hasTable('fee_vouchers')) {
                 $date = $this->column('fee_vouchers', ['due_date', 'date', 'created_at']);
                 $amount = $this->column('fee_vouchers', ['total_amount', 'amount']);
                 if ($date && $amount) {
@@ -201,26 +222,26 @@ class DashboardStatsService
                         $result['pending'] = (float) (clone $q)->sum($balance);
                     } elseif ($paid) {
                         $result['pending'] = (float) (clone $q)->selectRaw("SUM(CASE WHEN $amount > COALESCE($paid, 0) THEN $amount - COALESCE($paid, 0) ELSE 0 END) AS pending")->value('pending');
-                    } elseif (Schema::hasColumn('fee_vouchers', 'status')) {
+                    } elseif ($this->hasColumn('fee_vouchers', 'status')) {
                         $result['pending'] = (float) (clone $q)->whereIn('status', ['unpaid', 'pending', 'partial'])->sum($amount);
                     }
                 }
             }
-            if (Schema::hasTable('fee_payments')) {
+            if ($this->hasTable('fee_payments')) {
                 $date = $this->column('fee_payments', ['payment_date', 'paid_at', 'date', 'created_at']);
                 $amount = $this->column('fee_payments', ['amount', 'paid_amount']);
                 if ($date && $amount) {
                     $result['collected'] = (float) $this->monthQuery('fee_payments', $date, $month)->sum($amount);
                 }
             }
-            if (Schema::hasTable('expenses')) {
+            if ($this->hasTable('expenses')) {
                 $date = $this->column('expenses', ['expense_date', 'date', 'created_at']);
                 $amount = $this->column('expenses', ['amount', 'total_amount']);
                 if ($date && $amount) {
                     $result['expenses'] = (float) $this->monthQuery('expenses', $date, $month)->sum($amount);
                 }
             }
-            if (Schema::hasTable('fee_vouchers') && Schema::hasColumn('fee_vouchers', 'total_cents')) {
+            if ($this->hasTable('fee_vouchers') && $this->hasColumn('fee_vouchers', 'total_cents')) {
                 [$year, $billingMonth] = explode('-', $month);
                 $vouchers = \App\Models\FeeVoucher::with('payments')->whereNull('cancelled_at')->where('year', $year)->where('month', $billingMonth)->get();
                 $billing = app(FeeBillingService::class);
@@ -249,14 +270,14 @@ class DashboardStatsService
     private function eventQuery(string $from, ?string $to = null, ?int $limit = null): array
     {
         $events = collect();
-        if (Schema::hasTable('events')) {
+        if ($this->hasTable('events')) {
             $q = DB::table('events')->whereRaw('COALESCE(end_date, date) >= ?', [$from])->when($to, fn ($q) => $q->whereDate('date', '<=', $to))->orderBy('date')->orderBy('id');
             if ($limit) {
                 $q->limit($limit);
             }
             $events = $q->get()->map(fn ($e) => ['date' => substr($e->date, 0, 10), 'end_date' => substr($e->end_date ?? $e->date, 0, 10), 'title' => $e->title, 'detail' => $e->description ?? ucfirst($e->type), 'tone' => in_array($e->color, ['blue', 'green', 'coral', 'pink', 'amber']) ? $e->color : 'blue']);
         }
-        if (Schema::hasTable('holidays')) {
+        if ($this->hasTable('holidays')) {
             $q = DB::table('holidays')->whereDate('end_date', '>=', $from)->when($to, fn ($q) => $q->whereDate('start_date', '<=', $to))->orderBy('start_date')->orderBy('id');
             if ($limit) {
                 $q->limit($limit);
@@ -283,7 +304,7 @@ class DashboardStatsService
     public function activities(): array
     {
         return $this->cached('activities', ['items' => [], 'empty' => true], function () {
-            if (! Schema::hasTable('activities')) {
+            if (! $this->hasTable('activities')) {
                 return ['items' => [], 'empty' => true];
             }
             $items = DB::table('activities')->orderByDesc('created_at')->orderByDesc('id')->limit(5)->get()->map(function ($a) {

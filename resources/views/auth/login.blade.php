@@ -8,4 +8,5 @@
 <div class="auth-options"><label class="auth-remember"><input type="checkbox" name="remember" value="1" @checked(old('remember'))> Remember me</label><a href="{{ route('password.request') }}">Forgot password?</a></div>@error('remember')<p class="auth-error">{{ $message }}</p>@enderror
 <button type="submit" class="auth-submit">LOGIN <span aria-hidden="true">→</span></button>
 </form>
+<p class="auth-register-link">Student account nahi hai? <a href="{{ route('register') }}">Register here</a></p>
 @endsection

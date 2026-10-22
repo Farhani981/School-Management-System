@@ -40,7 +40,9 @@ class TeacherController extends Controller
 
     public static function options(): array
     {
-        return ['departments' => Department::orderBy('name')->get(), 'designations' => Designation::orderBy('name')->get()];
+        return \Illuminate\Support\Facades\Cache::remember('teacher_form_options', 300, function () {
+            return ['departments' => Department::orderBy('name')->get(), 'designations' => Designation::orderBy('name')->get()];
+        });
     }
 
     public function index(Request $request)

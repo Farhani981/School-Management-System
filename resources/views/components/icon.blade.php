@@ -16,10 +16,18 @@
         'menu' => '<path d="M4 6h16M4 12h16M4 18h16"/>',
         'search' => '<circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/>',
         'chevron' => '<path d="m9 5 7 7-7 7"/>',
+        'chevron-left' => '<path d="m15 19-7-7 7-7"/>',
+        'chevron-right' => '<path d="m9 5 7 7-7 7"/>',
         'arrow' => '<path d="M7 17 17 7M7 7h10v10"/>',
         'clock' => '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
         'check' => '<path d="m5 12 4 4L19 6"/>',
         'help' => '<circle cx="12" cy="12" r="9"/><path d="M9 9a3 3 0 1 1 5 2c-2 1-2 2-2 3M12 17h.01"/>',
+        'user' => '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+        'logout' => '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>',
+        'lock' => '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+        'award' => '<circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>',
+        'switch' => '<path d="m16 3 4 4-4 4M20 7H4M8 21l-4-4 4-4M4 17h16"/>',
+        'dots' => '<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>',
     ];
 @endphp
 <svg {{ $attributes->class(['icon']) }} width="{{ $size }}" height="{{ $size }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{!! $paths[$name] ?? $paths['book'] !!}</svg>

@@ -34,6 +34,7 @@ class LeaveSetupController extends Controller
         }
         $data['annual_days'] = (int) floor($data['annual_quota']);
         DB::transaction(fn () => $type ? $type->update($data) : LeaveType::create($data));
+        \Illuminate\Support\Facades\Cache::forget('active_leave_types');
 
         return back()->with('success', 'Leave type saved. Existing session totals are unchanged; adjust them separately.');
     }

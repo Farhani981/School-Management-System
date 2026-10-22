@@ -3,6 +3,7 @@
 @section('title', 'School Expenses')
 
 @section('content')
+@include('accounts.nav')
 <div class="page-heading">
     <div>
         <div class="breadcrumb">Accounts / Expenses</div>
@@ -62,7 +63,7 @@
                             </span>
                         </td>
 
-                        <td>{{ $expense->description }}</td>
+                        <td><strong>{{ $expense->title }}</strong><p>{{ $expense->description }}</p><p>Paid To: {{ $expense->paid_to ?: '—' }}</p>@if($expense->attachment_path)<a href="{{ route('accounts.attachments.show', ['expense', $expense->id]) }}">Download Bill</a>@endif</td>
 
                         <td>
                             <strong>

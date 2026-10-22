@@ -42,6 +42,9 @@ class AccountController extends Controller
             + (int) str_pad($paisa, 2, '0');
 
         AccountExpense::create([
+            'title' => $data['title'],
+            'paid_to' => $data['paid_to'],
+            'attachment_path' => $request->file('attachment')?->store('accounts/expenses', 'local'),
             'category' => $data['category'],
             'description' => $data['description'],
             'amount_cents' => $amountCents,

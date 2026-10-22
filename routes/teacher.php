@@ -64,6 +64,13 @@ Route::post('progress/{student}/notes', [\App\Http\Controllers\Teacher\StudentPr
 Route::put('progress/notes/{note}', [\App\Http\Controllers\Teacher\StudentProgressController::class, 'updateNote'])->name('progress.notes.update');
 Route::delete('progress/notes/{note}', [\App\Http\Controllers\Teacher\StudentProgressController::class, 'destroyNote'])->name('progress.notes.destroy');
 
+// Student Leave Requests for Teacher's assigned classes
+Route::prefix('student-leaves')->name('student-leaves.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Admin\StudentLeaveApprovalController::class, 'index'])->name('index');
+    Route::post('/{id}/review', [\App\Http\Controllers\Admin\StudentLeaveApprovalController::class, 'update'])->name('update');
+    Route::get('/{id}/attachment', [\App\Http\Controllers\Admin\StudentLeaveApprovalController::class, 'attachment'])->name('attachment');
+});
+
 // Secondary pages
 foreach (['timetable' => 'Timetable', 'leaves' => 'Leaves', 'notices' => 'Notices', 'profile' => 'My Profile'] as $path => $title) {
     Route::get($path, [PanelController::class, 'show'])->defaults('page', $path)->defaults('title', $title)->name($path.'.index');

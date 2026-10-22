@@ -10,6 +10,7 @@ class NotificationController extends Controller
     {
         $item = $request->user()->notifications()->whereKey($notification)->firstOrFail();
         $item->markAsRead();
+        \Illuminate\Support\Facades\Cache::forget('user_topbar_notifs_'.$request->user()->id);
         return back()->with('success', 'Notification marked as read.');
     }
 }

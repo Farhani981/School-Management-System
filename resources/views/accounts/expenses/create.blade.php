@@ -3,6 +3,7 @@
 @section('title', 'Add Expense')
 
 @section('content')
+@include('accounts.nav')
 <div class="page-heading">
     <div>
         <div class="breadcrumb">Accounts / Expenses</div>
@@ -19,11 +20,15 @@
 @include('students.partials.feedback')
 
 <form method="POST"
+      enctype="multipart/form-data"
       action="{{ route('accounts.expenses.store') }}"
       class="panel student-form">
     @csrf
 
     <div class="student-form-grid">
+        <div class="admission-field"><label for="expense-title">Expense Title *</label><input id="expense-title" name="title" value="{{ old('title') }}" maxlength="255" required></div>
+        <div class="admission-field"><label for="expense-paid-to">Paid To *</label><input id="expense-paid-to" name="paid_to" value="{{ old('paid_to') }}" maxlength="255" required></div>
+        <div class="admission-field"><label for="expense-attachment">Bill / Attachment (PDF, JPG, PNG; max 5 MB)</label><input id="expense-attachment" name="attachment" type="file" accept=".pdf,.jpg,.jpeg,.png"></div>
         <div class="admission-field">
             <label for="expense-category">Category *</label>
             <input
@@ -42,6 +47,7 @@
                 <option value="Stationery">
                 <option value="Maintenance">
                 <option value="Transport">
+                <option value="Internet">
                 <option value="Other">
             </datalist>
         </div>

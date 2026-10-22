@@ -9,12 +9,25 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
+use App\Models\Student;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
     public function index()
     {
         return view('auth.login');
+    }
+
+    public function register() { return view('auth.register'); }
+
+    public function registerStore(Request $request)
+    {
+        $data=$request->validate(['name'=>'required|string|max:120','email'=>'required|email|max:255|unique:users,email','password'=>'required|string|min:8|confirmed']);
+        DB::transaction(function() use($data){$user=User::create(['name'=>$data['name'],'email'=>$data['email'],'password'=>Hash::make($data['password']),'role'=>'Student']);$user->assignRole('Student');[$first,$last]=array_pad(explode(' ',trim($data['name']),2),2,'');Student::create(['user_id'=>$user->id,'first_name'=>$first,'last_name'=>$last,'father_name'=>'Pending verification','date_of_birth'=>'2000-01-01','gender'=>'Other','phone'=>'Pending verification','address'=>'Pending verification','admission_date'=>now()->toDateString(),'roll_number'=>'PENDING-'.$user->id,'admission_no'=>'PENDING-'.$user->id,'status'=>'Active','email'=>$user->email]);});
+        return redirect()->route('login')->with('status','Registration complete. You can now sign in.');
     }
 
     public function store(LoginRequest $request)

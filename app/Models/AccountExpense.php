@@ -10,6 +10,7 @@ class AccountExpense extends Model
     protected $table = 'expenses_tables';
 
     protected $fillable = [
+        'title', 'paid_to', 'attachment_path',
         'category',
         'description',
         'amount_cents',

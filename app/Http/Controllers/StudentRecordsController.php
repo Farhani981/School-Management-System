@@ -12,18 +12,20 @@ class StudentRecordsController extends Controller
 {
     public static function options(): array
     {
-        return [
-            'class_id' => DB::table('school_classes')->pluck('name', 'id')->sort(function ($first, $second) {
-                $rank = fn ($name) => match (mb_strtolower(trim($name))) {
-                    'nursery' => 0,
-                    'kg' => 1,
-                    default => 2,
-                };
-                return ($rank($first) <=> $rank($second)) ?: strnatcasecmp($first, $second);
-            }),
-            'section_id' => DB::table('school_sections')->orderBy('name')->pluck('name', 'id'),
-            'academic_session_id' => DB::table('academic_sessions')->orderByDesc('name')->pluck('name', 'id'),
-        ];
+        return \Illuminate\Support\Facades\Cache::remember('student_form_options', 300, function () {
+            return [
+                'class_id' => DB::table('school_classes')->pluck('name', 'id')->sort(function ($first, $second) {
+                    $rank = fn ($name) => match (mb_strtolower(trim($name))) {
+                        'nursery' => 0,
+                        'kg' => 1,
+                        default => 2,
+                    };
+                    return ($rank($first) <=> $rank($second)) ?: strnatcasecmp($first, $second);
+                }),
+                'section_id' => DB::table('school_sections')->orderBy('name')->pluck('name', 'id'),
+                'academic_session_id' => DB::table('academic_sessions')->orderByDesc('name')->pluck('name', 'id'),
+            ];
+        });
     }
 
     public function documents(Request $request, Student $student, StudentRecords $records)

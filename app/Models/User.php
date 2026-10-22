@@ -37,6 +37,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
         'role',
     ];
@@ -54,6 +55,23 @@ class User extends Authenticatable
     public function teacher()
     {
         return $this->hasOne(Teacher::class);
+    }
+
+    public function student()
+    {
+        return $this->hasOne(Student::class);
+    }
+
+    public function children()
+    {
+        return $this->belongsToMany(Student::class, 'parent_student', 'parent_id', 'student_id')
+            ->withPivot('relationship', 'is_primary')
+            ->withTimestamps();
+    }
+
+    public function students()
+    {
+        return $this->children();
     }
 
     /**

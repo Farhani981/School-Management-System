@@ -17,11 +17,13 @@ return new class extends Migration
             $t->string('school_logo_path')->nullable();
         });
         Schema::create('parent_student', function (Blueprint $t) {
-            $t->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $t->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
+            $t->foreignId('parent_id')->nullable()->constrained('users')->cascadeOnDelete();
             $t->foreignId('student_id')->constrained('students')->cascadeOnDelete();
-            $t->foreignId('verified_by')->constrained('users')->restrictOnDelete();
+            $t->string('relationship')->nullable();
+            $t->boolean('is_primary')->default(true);
+            $t->foreignId('verified_by')->nullable()->constrained('users')->nullOnDelete();
             $t->timestamps();
-            $t->primary(['user_id', 'student_id']);
         });
         Schema::create('exam_student_comments', function (Blueprint $t) {
             $t->id();

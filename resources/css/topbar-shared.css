@@ -1,0 +1,522 @@
+/* ==========================================================================
+   UNIVERSAL SHARED TOPBAR COMPONENT
+   Standardized header layout matching the Admin Dashboard reference.
+   Used across Admin Portal, Teacher Portal, and Student/Parent Portal.
+   ========================================================================== */
+
+.topbar,
+body.admin-dashboard-shell .topbar,
+.teacher-dashboard-page .topbar,
+.portal-workspace .topbar {
+    height: 56px !important;
+    padding: 0 24px !important;
+    gap: 16px !important;
+    background: #ffffff !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+    display: flex !important;
+    align-items: center !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 30 !important;
+    box-sizing: border-box !important;
+}
+
+/* Hide legacy motto text everywhere */
+.topbar-motto,
+.topbar .topbar-motto,
+body.admin-dashboard-shell .topbar-motto,
+.teacher-dashboard-page .topbar-motto {
+    display: none !important;
+}
+
+/* Mobile menu toggle */
+.topbar-menu-toggle,
+.topbar #menu-toggle,
+body.admin-dashboard-shell .topbar-menu-toggle,
+.teacher-dashboard-page .topbar #menu-toggle {
+    display: none !important;
+}
+
+@media (max-width: 1023px) {
+    .topbar-menu-toggle,
+    .topbar #menu-toggle,
+    body.admin-dashboard-shell .topbar-menu-toggle,
+    .teacher-dashboard-page .topbar #menu-toggle {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 34px !important;
+        height: 34px !important;
+        border-radius: 8px !important;
+        border: 1px solid #e2e8f0 !important;
+        background: #ffffff !important;
+        color: #64748b !important;
+        cursor: pointer !important;
+        flex-shrink: 0 !important;
+    }
+}
+
+/* Universal Search Box */
+.topbar .search-box,
+body.admin-dashboard-shell .topbar .search-box,
+.teacher-dashboard-page .topbar .search-box {
+    width: min(390px, 48vw) !important;
+    height: 36px !important;
+    margin-right: auto !important;
+    padding: 0 14px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 9999px !important;
+    background: #f8fafc !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    position: relative !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+}
+
+.topbar .search-box input,
+body.admin-dashboard-shell .topbar .search-box input,
+.teacher-dashboard-page .topbar .search-box input {
+    font-size: 11.5px !important;
+    color: #0f172a !important;
+    background: transparent !important;
+    border: 0 !important;
+    outline: none !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    font-family: inherit !important;
+}
+
+.topbar .search-box input::placeholder {
+    color: #94a3b8 !important;
+    opacity: 1 !important;
+}
+
+.topbar .search-box .icon {
+    color: #64748b !important;
+    flex-shrink: 0 !important;
+}
+
+.topbar .search-box kbd {
+    display: none !important;
+}
+
+.topbar .search-results {
+    position: absolute !important;
+    top: calc(100% + 6px) !important;
+    left: 0 !important;
+    width: 100% !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
+    padding: 6px !important;
+    z-index: 50 !important;
+    max-height: 280px !important;
+    overflow-y: auto !important;
+    box-sizing: border-box !important;
+}
+
+.topbar .search-results button {
+    display: block !important;
+    width: 100% !important;
+    text-align: left !important;
+    padding: 8px 12px !important;
+    font-size: 12.5px !important;
+    color: #0f172a !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
+    transition: background 0.15s ease !important;
+}
+
+.topbar .search-results button:hover {
+    background: #f1f5f9 !important;
+}
+
+.topbar .search-results p {
+    padding: 10px 12px !important;
+    font-size: 12px !important;
+    color: #64748b !important;
+    margin: 0 !important;
+}
+
+/* Right Section Elements */
+.topbar-right,
+body.admin-dashboard-shell .topbar-right,
+.teacher-dashboard-page .topbar-right {
+    gap: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    margin-left: auto !important;
+    flex-shrink: 0 !important;
+}
+
+.topbar-divider {
+    display: none !important;
+}
+
+/* Notification Button */
+.topbar .notification-button,
+body.admin-dashboard-shell .topbar .notification-button,
+.teacher-dashboard-page .topbar .notification-button {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+    color: #64748b !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    transition: all 0.15s ease !important;
+    box-sizing: border-box !important;
+}
+
+.topbar .notification-button:hover,
+body.admin-dashboard-shell .topbar .notification-button:hover,
+.teacher-dashboard-page .topbar .notification-button:hover {
+    background: #f8fafc !important;
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
+}
+
+.topbar .notification-dot,
+body.admin-dashboard-shell .topbar .notification-dot,
+.teacher-dashboard-page .topbar .notification-dot {
+    position: absolute !important;
+    right: 9px !important;
+    top: 9px !important;
+    width: 8px !important;
+    height: 8px !important;
+    border-radius: 50% !important;
+    background: #ef4444 !important;
+    border: 2px solid #ffffff !important;
+    font-size: 0 !important;
+    padding: 0 !important;
+}
+
+/* Profile Button */
+.topbar .profile-button,
+body.admin-dashboard-shell .topbar .profile-button,
+.teacher-dashboard-page .topbar .profile-button {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    background: transparent !important;
+    border: 0 !important;
+    color: #0f172a !important;
+    cursor: pointer !important;
+    padding: 4px 6px !important;
+    border-radius: 10px !important;
+    transition: background 0.15s ease !important;
+}
+
+.topbar .profile-button:hover,
+body.admin-dashboard-shell .topbar .profile-button:hover,
+.teacher-dashboard-page .topbar .profile-button:hover {
+    background: rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Avatar Circle */
+.topbar .avatar,
+body.admin-dashboard-shell .topbar .avatar,
+.teacher-dashboard-page .topbar .avatar {
+    width: 38px !important;
+    height: 38px !important;
+    background: #2563eb !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 15px !important;
+    border-radius: 50% !important;
+    display: grid !important;
+    place-items: center !important;
+    flex-shrink: 0 !important;
+    border: none !important;
+}
+
+.topbar .profile-info,
+body.admin-dashboard-shell .topbar .profile-info,
+.teacher-dashboard-page .topbar .profile-info {
+    display: flex !important;
+    flex-direction: column !important;
+    text-align: left !important;
+    line-height: 1.25 !important;
+}
+
+.topbar .profile-name,
+body.admin-dashboard-shell .topbar .profile-name,
+.teacher-dashboard-page .topbar .profile-name {
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    letter-spacing: -0.2px !important;
+}
+
+.topbar .profile-role,
+body.admin-dashboard-shell .topbar .profile-role,
+.teacher-dashboard-page .topbar .profile-role {
+    font-size: 11.5px !important;
+    font-weight: 400 !important;
+    color: #64748b !important;
+    text-transform: capitalize !important;
+    margin-top: 1px !important;
+}
+
+.topbar .profile-chevron,
+body.admin-dashboard-shell .topbar .profile-chevron,
+.teacher-dashboard-page .topbar .profile-chevron {
+    color: #64748b !important;
+    margin-left: 2px !important;
+    flex-shrink: 0 !important;
+}
+
+/* Popovers Universal */
+.popover-wrap {
+    position: relative !important;
+}
+
+.popover {
+    position: absolute !important;
+    top: calc(100% + 8px) !important;
+    right: 0 !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04) !important;
+    font-size: 13px !important;
+    z-index: 50 !important;
+    padding: 8px !important;
+    box-sizing: border-box !important;
+}
+
+.profile-popover {
+    min-width: 220px !important;
+}
+
+.popover-profile-header {
+    padding: 8px 10px 10px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    margin-bottom: 6px !important;
+}
+
+.popover-user-name {
+    display: block !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
+    line-height: 1.3 !important;
+}
+
+.popover-user-email {
+    display: block !important;
+    font-size: 11.5px !important;
+    color: #64748b !important;
+    margin-top: 2px !important;
+    word-break: break-all !important;
+}
+
+.popover-menu-items {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+}
+
+.popover-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 9px 12px !important;
+    border-radius: 8px !important;
+    color: #0f172a !important;
+    text-decoration: none !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    background: transparent !important;
+    border: none !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    text-align: left !important;
+    cursor: pointer !important;
+    transition: background 0.15s ease !important;
+}
+
+.popover-item:hover {
+    background: #f8fafc !important;
+}
+
+.popover-item .icon {
+    color: #64748b !important;
+    flex-shrink: 0 !important;
+}
+
+.popover-item:hover .icon {
+    color: #0f172a !important;
+}
+
+.popover-logout-form {
+    margin-top: 4px !important;
+}
+
+.popover-logout-btn {
+    background: #fef2f2 !important;
+    color: #ef4444 !important;
+    border: 1px solid #fee2e2 !important;
+    border-radius: 10px !important;
+    padding: 10px 14px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    width: 100% !important;
+    cursor: pointer !important;
+    transition: all 0.15s ease !important;
+    box-sizing: border-box !important;
+}
+
+.popover-logout-btn:hover {
+    background: #fee2e2 !important;
+    color: #dc2626 !important;
+    border-color: #fecaca !important;
+}
+
+.popover-logout-btn .icon {
+    color: #ef4444 !important;
+}
+
+.popover-logout-btn:hover .icon {
+    color: #dc2626 !important;
+}
+
+.school-notifications {
+    width: 320px !important;
+    padding: 12px !important;
+}
+
+.popover-notifications-header {
+    padding-bottom: 8px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    margin-bottom: 8px !important;
+    font-size: 13.5px !important;
+    color: #0f172a !important;
+}
+
+/* Parent Child Switcher */
+.portal-child-switcher {
+    position: relative !important;
+}
+
+.portal-child-switcher-btn {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 4px 10px !important;
+    background: #eff6ff !important;
+    border: 1px solid #bfdbfe !important;
+    border-radius: 9999px !important;
+    cursor: pointer !important;
+    font-size: 12px !important;
+    font-weight: 600 !important;
+    color: #1d4ed8 !important;
+    transition: all 0.15s ease !important;
+}
+
+.portal-child-switcher-btn:hover {
+    background: #dbeafe !important;
+}
+
+.portal-child-switcher-avatar {
+    width: 24px !important;
+    height: 24px !important;
+    border-radius: 50% !important;
+    background: #2563eb !important;
+    color: #ffffff !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    flex-shrink: 0 !important;
+}
+
+.portal-child-dropdown {
+    width: 260px !important;
+    padding: 8px !important;
+}
+
+.portal-child-dropdown-header {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    color: #64748b !important;
+    padding: 6px 10px 8px !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+    margin-bottom: 6px !important;
+}
+
+.portal-child-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 8px 10px !important;
+    border-radius: 8px !important;
+    color: #0f172a !important;
+    cursor: pointer !important;
+    background: transparent !important;
+    border: none !important;
+    width: 100% !important;
+    text-align: left !important;
+    transition: background 0.12s !important;
+    box-sizing: border-box !important;
+}
+
+.portal-child-item:hover {
+    background: #f8fafc !important;
+}
+
+.portal-child-item.active {
+    background: #eff6ff !important;
+    color: #1d4ed8 !important;
+    font-weight: 600 !important;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 767px) {
+    .topbar,
+    body.admin-dashboard-shell .topbar,
+    .teacher-dashboard-page .topbar,
+    .portal-workspace .topbar {
+        padding: 0 12px !important;
+        gap: 10px !important;
+    }
+
+    .topbar .search-box,
+    body.admin-dashboard-shell .topbar .search-box,
+    .teacher-dashboard-page .topbar .search-box {
+        flex: 1 !important;
+        width: auto !important;
+        max-width: none !important;
+    }
+
+    .topbar .profile-info {
+        display: none !important;
+    }
+
+    .popover {
+        position: fixed !important;
+        top: 64px !important;
+        right: 12px !important;
+        left: 12px !important;
+        width: auto !important;
+        max-width: calc(100vw - 24px) !important;
+    }
+}

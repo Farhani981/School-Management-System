@@ -49,7 +49,7 @@ class TeacherPayrollController extends Controller
 
     public function slip(Payroll $payroll)
     {
-        $payroll->load('teacher');
+        $payroll->load('teacher.designation', 'teacher.department', 'teacher.salaryStructure');
 
         return Pdf::loadView('teachers.pdf.slip', compact('payroll'))->download('salary-'.$payroll->teacher->employee_id.'-'.$payroll->month->format('Y-m').'.pdf');
     }

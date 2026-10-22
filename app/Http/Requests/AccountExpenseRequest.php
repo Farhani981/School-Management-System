@@ -26,6 +26,9 @@ class AccountExpenseRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'title' => ['required', 'string', 'max:255'],
+            'paid_to' => ['required', 'string', 'max:255'],
+            'attachment' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:5120'],
             'category' => ['required', 'string', 'max:100'],
             'description' => ['required', 'string', 'max:5000'],
             'amount' => [
